@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>나의 미래 이야기</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">원주청원 학교 맞춤활동</p>
+      <h1>나의 미래 이야기</h1>
+    </div>
+    <button id="homeButton" class="home-button hidden" type="button">⌂ 처음 화면</button>
+  </header>
+
+  <main>
+    <section id="home" class="home-screen">
+      <div class="home-title">
+        <span class="badge">하고 싶은 활동을 눌러요</span>
+        <h2>오늘은 무엇을 할까요?</h2>
+        <p>한 번에 한 가지 활동만 해요.</p>
+      </div>
+      <div class="mission-grid">
+        <button id="introModeButton" class="mission-card intro-card" type="button">
+          <!-- <span class="mission-icon" aria-hidden="true">👋</span> -->
+          <!-- <span class="mission-step">4차시</span> -->
+          <strong>나를 소개해요</strong>
+          <small>내 정보를 넣고<br>제미나이 질문을 만들어요.</small>
+        </button>
+        <button id="futureModeButton" class="mission-card future-card" type="button">
+          <!-- <span class="mission-icon" aria-hidden="true">🎨</span> -->
+          <!-- <span class="mission-step">3차시</span> -->
+          <strong>미래의 나를 만들어요</strong>
+          <small>그림을 고르고<br>AI 문장을 만들어요.</small>
+        </button>
+        <button id="copyPracticeModeButton" class="mission-card practice-card" type="button">
+          <strong>복사 붙여넣기 연습</strong>
+          <small>드래그하고<br>Ctrl+C, Ctrl+V를 연습해요.</small>
+        </button>
+      </div>
+      <div class="privacy-note">🔒 개인정보,자세한 주소, 전화번호는 쓰지 않아요.</div>
+    </section>
+
+    <section id="introForm" class="panel hidden" aria-live="polite">
+      <span class="badge green">4차시 활동</span>
+      <h2>나를 소개해요</h2>
+      <p class="lead">짧게 써도 괜찮아요. 모르는 칸은 비워도 돼요.</p>
+
+      <div class="form-grid">
+        <label class="field">
+          <span><b>1. 이름또는 별명</b> <em>필수</em></span>
+          <input id="introName" type="text" maxlength="12" placeholder="예: 행복이" autocomplete="off">
+          <small>실명 대신 별명을 써도 좋아요.</small>
+        </label>
+        <label class="field">
+          <span><b>2. 학년</b></span>
+          <select id="introGrade">
+            <option value="">고르기</option>
+            <option>고등학교 1학년</option>
+            <option>고등학교 2학년</option>
+            <option>고등학교 3학년</option>
+          </select>
+        </label>
+        <label class="field">
+          <span><b>3. 사는 지역</b></span>
+          <input id="introRegion" type="text" maxlength="12" placeholder="예: 서울, 경기도" autocomplete="off">
+          <small>동·아파트·자세한 주소는 쓰지 않아요.</small>
+        </label>
+        <label class="field">
+          <span><b>4. 좋아하는 것</b></span>
+          <input id="introFavorite" type="text" maxlength="24" placeholder="예: 떡볶이, 강아지" autocomplete="off">
+        </label>
+      </div>
+
+      <fieldset class="choice-field">
+        <legend>좋아하는 그림을 하나 골라도 좋아요.</legend>
+        <div id="favoriteChoices" class="small-choices">
+          <button type="button" data-value="맛있는 음식"><span>🍕</span>맛있는 음식</button>
+          <button type="button" data-value="동물"><span>🐶</span>동물</button>
+          <button type="button" data-value="그림 그리기"><span>🎨</span>그림 그리기</button>
+          <button type="button" data-value="음악 듣기"><span>🎵</span>음악 듣기</button>
+          <button type="button" data-value="운동"><span>⚽</span>운동</button>
+          <button type="button" data-value="책 보기"><span>📚</span>책 보기</button>
+        </div>
+      </fieldset>
+
+      <label class="field full">
+        <span><b>5. 해보고 싶은 일</b></span>
+        <input id="introJob" type="text" maxlength="30" placeholder="예: 동물 돌보기, 빵 만들기" autocomplete="off">
+      </label>
+
+      <div class="center-actions">
+        <button id="makeIntroButton" class="primary green-bg" type="button">제미나이 질문 만들기</button>
+      </div>
+      <p id="introFormStatus" class="status" aria-live="assertive"></p>
+    </section>
+
+    <section id="introResult" class="result intro-result hidden" aria-live="polite">
+      <span class="badge green">제미나이 질문 완성!</span>
+      <h2>제미나이에게 부탁할 문장</h2>
+      <p class="safe-label">✅ 자세한 주소와 전화번호는 질문에 들어가지 않아요.</p>
+      <textarea id="introText" rows="11" aria-label="제미나이 자기소개 질문"></textarea>
+      <div class="result-buttons">
+        <button id="copyIntroButton" class="primary green-bg" type="button">제미나이 질문 복사하기</button>
+        <button id="editIntroButton" class="secondary green-border" type="button">다시 고치기</button>
+        <button id="saveIntroButton" class="secondary green-border" type="button">질문 저장</button>
+      </div>
+      <p id="introCopyStatus" class="copy-status" aria-live="assertive"></p>
+      <div class="paste-guide green-guide">
+        <h3>다음 행동</h3>
+        <p><strong>① 질문 복사</strong> → <strong>② 제미나이 열기</strong> → <strong>③ 붙여넣기</strong> → <strong>④ 만들어진 자기소개
+            확인</strong></p>
+      </div>
+      <details class="fallback-box">
+        <summary>제미나이가 어려우면 여기를 눌러요</summary>
+        <p>아래 문장은 구글 홈페이지에 바로 사용할 수 있어요.</p>
+        <textarea id="fallbackIntroText" rows="6" aria-label="바로 사용하는 자기소개 문장"></textarea>
+        <button id="copyFallbackButton" class="secondary green-border" type="button">바로 쓰는 문장 복사하기</button>
+        <p id="fallbackCopyStatus" class="copy-status" aria-live="assertive"></p>
+      </details>
+    </section>
+
+    <section id="futureWelcome" class="welcome hidden">
+      <div class="hero-copy">
+        <span class="badge">3차시 활동</span>
+        <h2>그림을 고르면<br>AI 문장이 완성돼요</h2>
+        <p>글을 길게 쓰지 않아도 괜찮아요.<br>나와 가까운 그림을 하나씩 골라요.</p>
+        <button id="startButton" class="primary" type="button">시작하기</button>
+      </div>
+      <div class="import-card">
+        <h3>1차시 결과가 있나요?</h3>
+        <p>결과 파일을 불러오면 동물 친구와 직업활동이 먼저 선택됩니다.</p>
+        <label class="secondary file-label">1차시 결과 불러오기<input id="importResult" type="file"
+            accept="application/json"></label>
+        <p id="importStatus" class="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="picker" class="picker hidden" aria-live="polite">
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+      <p id="progressText" class="progress-text"></p>
+      <div class="question">
+        <h2 id="questionTitle"></h2>
+        <p id="questionHelp"></p>
+        <div id="options" class="options"></div>
+      </div>
+      <div class="nav">
+        <button id="prevButton" class="secondary" type="button">이전</button>
+        <button id="skipButton" class="secondary" type="button">잘 모르겠어요</button>
+        <button id="nextButton" class="primary" type="button">다음</button>
+      </div>
+    </section>
+
+    <section id="futureResult" class="result hidden" aria-live="polite">
+      <span class="badge">AI 문장 완성!</span>
+      <h2>생성형 AI에 부탁할 문장</h2>
+      <div id="summary" class="summary"></div>
+      <label class="prompt-label" for="promptText">필요하면 선생님과 함께 문장을 고쳐요.</label>
+      <textarea id="promptText" rows="9"></textarea>
+      <section class="speaker-result" aria-labelledby="speakerTitle">
+        <h3 id="speakerTitle">금쪽이 스피커 질문</h3>
+        <p id="speakerJobText"></p>
+        <ol id="speakerQuestions"></ol>
+      </section>
+      <div class="result-buttons">
+        <button id="copyButton" class="primary" type="button">AI 문장 복사하기</button>
+        <button id="saveButton" class="secondary" type="button">문장 저장</button>
+        <button id="restartFutureButton" class="secondary" type="button">다시 고르기</button>
+      </div>
+      <p id="copyStatus" class="copy-status" aria-live="assertive"></p>
+      <div class="paste-guide">
+        <h3>다음 행동</h3>
+        <p><strong>① 문장 복사</strong> → <strong>② 생성형 AI 열기</strong> → <strong>③ 붙여넣기</strong> → <strong>④ 이미지 2장 중
+            선택</strong></p>
+        <p>🔒 이름·주소·전화번호는 AI에 입력하지 않아요.</p>
+      </div>
+    </section>
+
+    <section id="copyPractice" class="panel practice-panel hidden" aria-live="polite">
+      <span class="badge orange">연습 활동</span>
+      <h2>복사 붙여넣기 연습</h2>
+      <p class="lead">처음에는 드래그만, 다음에는 복사, 마지막에는 붙여넣기까지 연습해요.</p>
+      <div class="practice-stage">
+        <p id="practiceStepText" class="practice-step-text"></p>
+        <p id="practiceGuide" class="practice-guide-text"></p>
+        <div id="practiceTargetBox" class="copy-target" aria-label="드래그로 지정할 글자">
+          <span id="practiceTarget"></span>
+        </div>
+        <label id="practiceInputArea" class="practice-field" for="practiceInput">
+          <span>아래 칸을 누르고 Ctrl+V를 눌러요</span>
+          <textarea id="practiceInput" rows="4" autocomplete="off"></textarea>
+        </label>
+        <div class="practice-actions">
+          <button id="practiceNextButton" class="secondary orange-border" type="button">다음 단계</button>
+        </div>
+        <p id="practiceStatus" class="practice-status" aria-live="assertive"></p>
+      </div>
+      <!-- <div class="paste-guide orange-guide">
+        <h3>연습 순서</h3>
+        <p><strong>1-4단계 드래그</strong> → <strong>5-7단계 드래그+Ctrl+C</strong> → <strong>8-10단계 드래그+Ctrl+C+Ctrl+V</strong></p>
+      </div> -->
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
