@@ -3,8 +3,8 @@ window.PROMPT_APP_CONFIG = {
   steps: [
     {
       id: "character",
-      title: "미래의 나는 어떤 모습인가요?",
-      help: "마음에 드는 캐릭터를 하나 골라요.",
+      title: "마음에 드는 캐릭터를 하나 골라보세요",
+      help: "자신이 좋아하는 캐릭터를 선택하면 AI가 그 캐릭터를 닮은 그림을 만들어줘요.",
       options: [
         {
           value: "rabbit",
