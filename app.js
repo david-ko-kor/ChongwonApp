@@ -237,7 +237,7 @@
     if (grade) sentences.push(`저는 ${grade}입니다.`);
     if (region) sentences.push(`저는 ${region}에 살고 있습니다.`);
     if (favorite) sentences.push(`제가 좋아하는 것은 ${favorite}입니다.`);
-    if (job) sentences.push(`저는 앞으로 ${job}을(를) 해보고 싶습니다.`);
+    if (job) sentences.push(`저는 앞으로 ${job}를 해보고 싶습니다.`);
     $("fallbackIntroText").value = sentences.join(" ");
     $("introFormStatus").textContent = "";
     $("introCopyStatus").textContent = "";
