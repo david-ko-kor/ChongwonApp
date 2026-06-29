@@ -10,6 +10,7 @@
   --cream: #fff9ee;
   --line: #cad7de;
   --muted: #596c7a;
+  --red: red;
 }
 * {
   box-sizing: border-box;
@@ -35,7 +36,7 @@ header {
 }
 .eyebrow {
   margin: 0 0 5px;
-  color: var(--orange);
+  color: var(--purple);
   font-weight: 900;
   letter-spacing: 0.06em;
 }
@@ -162,11 +163,11 @@ main {
   background: #f8fffc;
 }
 .future-card {
-  border-color: var(--purple);
+  border-color: var(--red);
   background: #fdfbff;
 }
 .practice-card {
-  border-color: var(--orange);
+  border-color: var(--coral);
   background: #fffaf4;
 }
 .mission-icon {
