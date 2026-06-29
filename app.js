@@ -23,16 +23,16 @@
       mode: "select",
       guide: "짧은 글자예요. 글자 전체를 드래그해요.",
     },
-    { text: "청원학교", mode: "select", guide: "한 글자를 드래그해요." },
+    { text: "청원학교", mode: "select", guide: "청원학교를 드래그 해주세요." },
     {
       text: "바리스타",
       mode: "select",
-      guide: "조금 긴 낱말을 처음부터 끝까지 드래그해요.",
+      guide: ".",
     },
     {
       text: "오늘의 점심메뉴는 무엇인가요?",
       mode: "select",
-      guide: "인사말 전체를 드래그해요.",
+      guide: "문장 전체를 드래그 해주세요",
     },
     {
       text: "미래의 나",
@@ -40,7 +40,7 @@
       guide: "드래그한 다음 Ctrl+C를 눌러 복사해요.",
     },
     {
-      text: "바리스타는 어떤 일을 해?",
+      text: "바리스타는 어떤 일을 하나요?",
       mode: "copy",
       guide: "질문 문장을 드래그한 다음 Ctrl+C를 눌러요.",
     },
