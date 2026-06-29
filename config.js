@@ -132,7 +132,7 @@ window.PROMPT_APP_CONFIG = {
         {
           value: "library",
           label: "책 정리하기",
-          image: "assets/activities/office.png",
+          image: "assets/activities/book1.jpg",
           prompt: "책을 분류하고 선반에 가지런히 정리하는",
         },
         {
