@@ -2,7 +2,15 @@
   "use strict";
   const cfg = window.PROMPT_APP_CONFIG;
   const $ = (id) => document.getElementById(id);
-  const screens = ["home", "introForm", "introResult", "futureWelcome", "picker", "futureResult", "copyPractice"];
+  const screens = [
+    "home",
+    "introForm",
+    "introResult",
+    "futureWelcome",
+    "picker",
+    "futureResult",
+    "copyPractice",
+  ];
   let stepIndex = 0;
   let practiceIndex = 0;
   let practiceSelected = false;
@@ -10,16 +18,52 @@
   let favoriteChoice = "";
   const answers = {};
   const practiceItems = [
-    { text: "AI", mode: "select", guide: "짧은 글자예요. 글자 전체를 드래그해요." },
-    { text: "꿈", mode: "select", guide: "한 글자를 드래그해요." },
-    { text: "바리스타", mode: "select", guide: "조금 긴 낱말을 처음부터 끝까지 드래그해요." },
-    { text: "안녕하세요", mode: "select", guide: "인사말 전체를 드래그해요." },
-    { text: "미래의 나", mode: "copy", guide: "드래그한 다음 Ctrl+C를 눌러 복사해요." },
-    { text: "바리스타는 어떤 일을 해?", mode: "copy", guide: "질문 문장을 드래그한 다음 Ctrl+C를 눌러요." },
-    { text: "저는 카페에서 일하고 싶어요.", mode: "copy", guide: "긴 문장을 드래그한 다음 Ctrl+C를 눌러요." },
-    { text: "금쪽이 스피커야", mode: "paste", guide: "드래그하고 Ctrl+C를 누른 뒤 아래 칸에 Ctrl+V로 붙여넣어요." },
-    { text: "금쪽이 스피커야, 바리스타는 어떤 일을 해?", mode: "paste", guide: "긴 질문을 복사해서 아래 칸에 붙여넣어요." },
-    { text: "금쪽이 스피커야, 오늘 내가 연습할 일을 알려줘.", mode: "paste", guide: "마지막 긴 문장을 복사하고 붙여넣어요." }
+    {
+      text: "안녕",
+      mode: "select",
+      guide: "짧은 글자예요. 글자 전체를 드래그해요.",
+    },
+    { text: "청원학교", mode: "select", guide: "한 글자를 드래그해요." },
+    {
+      text: "바리스타",
+      mode: "select",
+      guide: "조금 긴 낱말을 처음부터 끝까지 드래그해요.",
+    },
+    {
+      text: "오늘의 점심메뉴는 무엇인가요?",
+      mode: "select",
+      guide: "인사말 전체를 드래그해요.",
+    },
+    {
+      text: "미래의 나",
+      mode: "copy",
+      guide: "드래그한 다음 Ctrl+C를 눌러 복사해요.",
+    },
+    {
+      text: "바리스타는 어떤 일을 해?",
+      mode: "copy",
+      guide: "질문 문장을 드래그한 다음 Ctrl+C를 눌러요.",
+    },
+    {
+      text: "저는 카페에서 일하고 싶어요.",
+      mode: "copy",
+      guide: "긴 문장을 드래그한 다음 Ctrl+C를 눌러요.",
+    },
+    {
+      text: "금쪽이 스피커야",
+      mode: "paste",
+      guide: "드래그하고 Ctrl+C를 누른 뒤 아래 칸에 Ctrl+V로 붙여넣어요.",
+    },
+    {
+      text: "금쪽이 스피커야, 바리스타는 어떤 일을 해?",
+      mode: "paste",
+      guide: "긴 질문을 복사해서 아래 칸에 붙여넣어요.",
+    },
+    {
+      text: "금쪽이 스피커야, 오늘 내가 연습할 일을 알려줘.",
+      mode: "paste",
+      guide: "마지막 긴 문장을 복사하고 붙여넣어요.",
+    },
   ];
 
   function show(id) {
@@ -29,9 +73,17 @@
   }
 
   function html(value) {
-    return String(value).replace(/[&<>"']/g, (m) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    })[m]);
+    return String(value).replace(
+      /[&<>"']/g,
+      (m) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[m],
+    );
   }
 
   async function copyText(text, statusId, successMessage) {
@@ -44,10 +96,16 @@
       temporary.value = text;
       document.body.appendChild(temporary);
       temporary.select();
-      try { ok = document.execCommand("copy"); } catch (copyError) { ok = false; }
+      try {
+        ok = document.execCommand("copy");
+      } catch (copyError) {
+        ok = false;
+      }
       temporary.remove();
     }
-    $(statusId).textContent = ok ? successMessage : "자동 복사가 어려워요. 문장을 길게 눌러 복사해 주세요.";
+    $(statusId).textContent = ok
+      ? successMessage
+      : "자동 복사가 어려워요. 문장을 길게 눌러 복사해 주세요.";
   }
 
   function saveText(text, filename) {
@@ -61,7 +119,8 @@
 
   function renderPractice() {
     const current = practiceItems[practiceIndex];
-    $("practiceStepText").textContent = `${practiceIndex + 1} / ${practiceItems.length} 단계`;
+    $("practiceStepText").textContent =
+      `${practiceIndex + 1} / ${practiceItems.length} 단계`;
     $("practiceTarget").textContent = current.text;
     $("practiceGuide").textContent = current.guide;
     $("practiceInput").value = "";
@@ -69,11 +128,12 @@
     practiceCopied = false;
     $("practiceNextButton").disabled = true;
     $("practiceInputArea").classList.toggle("hidden", current.mode !== "paste");
-    $("practiceStatus").textContent = current.mode === "select"
-      ? "글자를 드래그해요. 맞게 드래그하면 자동으로 알려줘요."
-      : current.mode === "copy"
-        ? "글자를 드래그한 다음 Ctrl+C를 눌러요."
-        : "글자를 드래그하고 Ctrl+C를 누른 다음, 아래 칸에 Ctrl+V로 붙여넣어요.";
+    $("practiceStatus").textContent =
+      current.mode === "select"
+        ? "글자를 드래그해요. 맞게 드래그하면 자동으로 알려줘요."
+        : current.mode === "copy"
+          ? "글자를 드래그한 다음 Ctrl+C를 눌러요."
+          : "글자를 드래그하고 Ctrl+C를 누른 다음, 아래 칸에 Ctrl+V로 붙여넣어요.";
     $("practiceStatus").classList.remove("success");
   }
 
@@ -87,16 +147,18 @@
     if (selectedPracticeText() === expected) {
       if (practiceSelected) return;
       practiceSelected = true;
-      $("practiceStatus").textContent = current.mode === "select"
-        ? "잘했어요! 드래그가 되었어요. 다음 단계로 가도 좋아요."
-        : "좋아요. 이제 키보드에서 Ctrl+C를 눌러요.";
+      $("practiceStatus").textContent =
+        current.mode === "select"
+          ? "잘했어요! 드래그가 되었어요. 다음 단계로 가도 좋아요."
+          : "좋아요. 이제 키보드에서 Ctrl+C를 눌러요.";
       $("practiceStatus").classList.add("success");
       if (current.mode === "select") {
         $("practiceNextButton").disabled = false;
       }
     } else if (selectedPracticeText()) {
       practiceSelected = false;
-      $("practiceStatus").textContent = "아직 글자 전체가 지정되지 않았어요. 글자를 처음부터 끝까지 드래그해요.";
+      $("practiceStatus").textContent =
+        "아직 글자 전체가 지정되지 않았어요. 글자를 처음부터 끝까지 드래그해요.";
       $("practiceStatus").classList.remove("success");
     }
   }
@@ -109,7 +171,8 @@
       $("practiceStatus").classList.add("success");
       $("practiceNextButton").disabled = false;
     } else {
-      $("practiceStatus").textContent = "아직 달라요. 다시 복사하고 붙여넣어 볼까요?";
+      $("practiceStatus").textContent =
+        "아직 달라요. 다시 복사하고 붙여넣어 볼까요?";
       $("practiceStatus").classList.remove("success");
       $("practiceNextButton").disabled = true;
     }
@@ -127,9 +190,10 @@
     if (!shortcut) return;
     if (key === "c" && practiceSelected) {
       practiceCopied = true;
-      $("practiceStatus").textContent = practiceItems[practiceIndex].mode === "paste"
-        ? "Ctrl+C를 눌렀어요. 이제 아래 칸을 누르고 Ctrl+V를 눌러요."
-        : "Ctrl+C를 눌렀어요. 다음 단계로 가도 좋아요.";
+      $("practiceStatus").textContent =
+        practiceItems[practiceIndex].mode === "paste"
+          ? "Ctrl+C를 눌렀어요. 이제 아래 칸을 누르고 Ctrl+V를 눌러요."
+          : "Ctrl+C를 눌렀어요. 다음 단계로 가도 좋아요.";
       $("practiceStatus").classList.add("success");
       if (practiceItems[practiceIndex].mode === "copy") {
         $("practiceNextButton").disabled = false;
@@ -167,7 +231,7 @@
       "학생을 존중하는 표현을 사용하고, 과장하거나 어린아이처럼 표현하지 마세요.",
       "자기소개 문장만 답해 주세요.",
       "",
-      ...information
+      ...information,
     ].join("\n");
     const sentences = [`안녕하세요. 저는 ${name}입니다.`];
     if (grade) sentences.push(`저는 ${grade}입니다.`);
@@ -180,16 +244,23 @@
     show("introResult");
   }
 
-  function step() { return cfg.steps[stepIndex]; }
-  function optionByValue(s, value) { return s.options.find((option) => option.value === value); }
-  function chosen(s) { return optionByValue(s, answers[s.id]); }
+  function step() {
+    return cfg.steps[stepIndex];
+  }
+  function optionByValue(s, value) {
+    return s.options.find((option) => option.value === value);
+  }
+  function chosen(s) {
+    return optionByValue(s, answers[s.id]);
+  }
 
   function renderStep() {
     const current = step();
     $("questionTitle").textContent = current.title;
     $("questionHelp").textContent = current.help;
     $("progressText").textContent = `${stepIndex + 1} / ${cfg.steps.length}`;
-    $("progressBar").style.width = `${((stepIndex + 1) / cfg.steps.length) * 100}%`;
+    $("progressBar").style.width =
+      `${((stepIndex + 1) / cfg.steps.length) * 100}%`;
     const host = $("options");
     host.innerHTML = "";
     current.options.forEach((option) => {
@@ -199,19 +270,26 @@
       button.className = `option${selected ? " selected" : ""}`;
       button.setAttribute("aria-pressed", selected ? "true" : "false");
       button.innerHTML = `<img src="${html(option.image)}" alt=""><span>${html(option.label)}</span>`;
-      button.onclick = () => { answers[current.id] = option.value; renderStep(); };
+      button.onclick = () => {
+        answers[current.id] = option.value;
+        renderStep();
+      };
       host.appendChild(button);
     });
     $("prevButton").disabled = stepIndex === 0;
     $("nextButton").disabled = !answers[current.id];
-    $("nextButton").textContent = stepIndex === cfg.steps.length - 1 ? "AI 문장 만들기" : "다음";
+    $("nextButton").textContent =
+      stepIndex === cfg.steps.length - 1 ? "AI 문장 만들기" : "다음";
   }
 
   function makeFuturePrompt() {
     const fallback = {
-      character: "한국의 고등학생 캐릭터", currentState: "현재 마음을 편안하게 존중하며",
-      place: "밝고 안전한 일하는 공간", activity: "관심 있는 일을 하는",
-      futureMood: "편안하고 자신 있는 표정", style: "따뜻하고 선명한 2D 교육용 일러스트"
+      character: "한국의 고등학생 캐릭터",
+      currentState: "현재 마음을 편안하게 존중하며",
+      place: "밝고 안전한 일하는 공간",
+      activity: "관심 있는 일을 하는",
+      futureMood: "편안하고 자신 있는 표정",
+      style: "따뜻하고 선명한 2D 교육용 일러스트",
     };
     const value = (id) => {
       const item = cfg.steps.find((candidate) => candidate.id === id);
@@ -226,61 +304,124 @@
     const sets = {
       bake: {
         job: "제빵사",
-        questions: ["제빵사는 어떤 일을 해?", "빵을 만들 때 어떤 도구를 사용해?", "빵을 만들 때 조심할 것은 뭐야?", "제빵사가 되려면 무엇을 연습하면 좋아?", "제빵사 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "제빵사는 어떤 일을 해?",
+          "빵을 만들 때 어떤 도구를 사용해?",
+          "빵을 만들 때 조심할 것은 뭐야?",
+          "제빵사가 되려면 무엇을 연습하면 좋아?",
+          "제빵사 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       animal_care: {
         job: "동물 돌봄 도우미",
-        questions: ["동물 돌봄 도우미는 어떤 일을 해?", "동물에게 먹이를 줄 때 조심할 것은 뭐야?", "동물 돌봄 공간에서는 어떤 도구를 사용해?", "동물 돌봄 일을 하려면 무엇을 연습하면 좋아?", "동물 돌봄 도우미 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "동물 돌봄 도우미는 어떤 일을 해?",
+          "동물에게 먹이를 줄 때 조심할 것은 뭐야?",
+          "동물 돌봄 공간에서는 어떤 도구를 사용해?",
+          "동물 돌봄 일을 하려면 무엇을 연습하면 좋아?",
+          "동물 돌봄 도우미 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       library: {
         job: "도서관 정리 보조",
-        questions: ["도서관 정리 보조는 어떤 일을 해?", "책을 정리할 때 어떤 순서로 하면 좋아?", "도서관에서 지켜야 할 약속은 뭐야?", "도서관 정리 일을 하려면 무엇을 연습하면 좋아?", "도서관 정리 보조 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "도서관 정리 보조는 어떤 일을 해?",
+          "책을 정리할 때 어떤 순서로 하면 좋아?",
+          "도서관에서 지켜야 할 약속은 뭐야?",
+          "도서관 정리 일을 하려면 무엇을 연습하면 좋아?",
+          "도서관 정리 보조 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       design: {
         job: "캐릭터 디자이너",
-        questions: ["캐릭터 디자이너는 어떤 일을 해?", "그림 디자인을 할 때 먼저 정할 것은 뭐야?", "디자이너가 사용하는 도구는 무엇이 있어?", "캐릭터 디자이너가 되려면 무엇을 연습하면 좋아?", "캐릭터 디자이너 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "캐릭터 디자이너는 어떤 일을 해?",
+          "그림 디자인을 할 때 먼저 정할 것은 뭐야?",
+          "디자이너가 사용하는 도구는 무엇이 있어?",
+          "캐릭터 디자이너가 되려면 무엇을 연습하면 좋아?",
+          "캐릭터 디자이너 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       display: {
         job: "상품 진열원",
-        questions: ["상품 진열원은 어떤 일을 해?", "상품을 보기 좋게 놓으려면 어떻게 하면 좋아?", "상품을 정리할 때 조심할 것은 뭐야?", "상품 진열 일을 하려면 무엇을 연습하면 좋아?", "상품 진열원 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "상품 진열원은 어떤 일을 해?",
+          "상품을 보기 좋게 놓으려면 어떻게 하면 좋아?",
+          "상품을 정리할 때 조심할 것은 뭐야?",
+          "상품 진열 일을 하려면 무엇을 연습하면 좋아?",
+          "상품 진열원 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       office: {
         job: "사무 보조",
-        questions: ["사무 보조는 어떤 일을 해?", "자료를 정리할 때 어떤 순서로 하면 좋아?", "컴퓨터로 자료를 입력할 때 조심할 것은 뭐야?", "사무 보조 일을 하려면 무엇을 연습하면 좋아?", "사무 보조 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "사무 보조는 어떤 일을 해?",
+          "자료를 정리할 때 어떤 순서로 하면 좋아?",
+          "컴퓨터로 자료를 입력할 때 조심할 것은 뭐야?",
+          "사무 보조 일을 하려면 무엇을 연습하면 좋아?",
+          "사무 보조 일을 쉬운 말로 설명해 줘.",
+        ],
       },
       cafe: {
         job: "바리스타",
-        questions: ["바리스타는 어떤 일을 해?", "카페에서 손님에게 어떻게 말하면 좋아?", "바리스타가 사용하는 도구는 무엇이 있어?", "음료를 만들 때 가장 중요한 순서는 뭐야?", "바리스타 일을 쉬운 말로 설명해 줘."]
+        questions: [
+          "바리스타는 어떤 일을 해?",
+          "카페에서 손님에게 어떻게 말하면 좋아?",
+          "바리스타가 사용하는 도구는 무엇이 있어?",
+          "음료를 만들 때 가장 중요한 순서는 뭐야?",
+          "바리스타 일을 쉬운 말로 설명해 줘.",
+        ],
+      },
+    };
+    return (
+      sets[activity] ||
+      sets[place] || {
+        job: "미래의 직업",
+        questions: [
+          "이 직업은 어떤 일을 해?",
+          "이 일을 할 때 필요한 도구는 뭐야?",
+          "이 일을 할 때 조심할 것은 뭐야?",
+          "이 일을 하려면 무엇을 연습하면 좋아?",
+          "이 직업을 쉬운 말로 설명해 줘.",
+        ],
       }
-    };
-    return sets[activity] || sets[place] || {
-      job: "미래의 직업",
-      questions: ["이 직업은 어떤 일을 해?", "이 일을 할 때 필요한 도구는 뭐야?", "이 일을 할 때 조심할 것은 뭐야?", "이 일을 하려면 무엇을 연습하면 좋아?", "이 직업을 쉬운 말로 설명해 줘."]
-    };
+    );
   }
 
   function showFutureResult() {
-    const selected = cfg.steps.map((item) => ({ item, option: chosen(item) })).filter((entry) => entry.option);
-    $("summary").innerHTML = selected.map((entry) =>
-      `<div class="summary-item"><img src="${html(entry.option.image)}" alt=""><strong>${html(entry.option.label)}</strong></div>`
-    ).join("");
+    const selected = cfg.steps
+      .map((item) => ({ item, option: chosen(item) }))
+      .filter((entry) => entry.option);
+    $("summary").innerHTML = selected
+      .map(
+        (entry) =>
+          `<div class="summary-item"><img src="${html(entry.option.image)}" alt=""><strong>${html(entry.option.label)}</strong></div>`,
+      )
+      .join("");
     $("promptText").value = makeFuturePrompt();
     const speaker = makeSpeakerQuestionSet();
-    $("speakerJobText").textContent = `${speaker.job}에 대해 AI 스피커에게 물어볼 질문입니다.`;
-    $("speakerQuestions").innerHTML = speaker.questions.map((question) => `<li>${html(question)}</li>`).join("");
+    $("speakerJobText").textContent =
+      `${speaker.job}에 대해 AI 스피커에게 물어볼 질문입니다.`;
+    $("speakerQuestions").innerHTML = speaker.questions
+      .map((question) => `<li>${html(question)}</li>`)
+      .join("");
     $("copyStatus").textContent = "";
     show("futureResult");
   }
 
   function nextStep() {
-    if (stepIndex < cfg.steps.length - 1) { stepIndex += 1; renderStep(); }
-    else showFutureResult();
+    if (stepIndex < cfg.steps.length - 1) {
+      stepIndex += 1;
+      renderStep();
+    } else showFutureResult();
   }
 
   function skipStep() {
     answers[step().id] = null;
-    if (stepIndex < cfg.steps.length - 1) { stepIndex += 1; renderStep(); }
-    else showFutureResult();
+    if (stepIndex < cfg.steps.length - 1) {
+      stepIndex += 1;
+      renderStep();
+    } else showFutureResult();
   }
 
   function importFirst(file) {
@@ -291,13 +432,17 @@
         if (data.answers?.avatar) answers.character = data.answers.avatar;
         if (data.finalJob) {
           const activity = cfg.steps.find((item) => item.id === "activity");
-          const match = activity.options.find((option) => option.label === data.finalJob);
+          const match = activity.options.find(
+            (option) => option.label === data.finalJob,
+          );
           if (match) answers.activity = match.value;
           $("introJob").value = data.finalJob;
         }
-        $("importStatus").textContent = "불러왔어요! 동물 친구와 직업활동이 먼저 선택됩니다.";
+        $("importStatus").textContent =
+          "불러왔어요! 동물 친구와 직업활동이 먼저 선택됩니다.";
       } catch (error) {
-        $("importStatus").textContent = "결과 파일을 읽지 못했어요. 선생님에게 도움을 요청하세요.";
+        $("importStatus").textContent =
+          "결과 파일을 읽지 못했어요. 선생님에게 도움을 요청하세요.";
       }
     };
     reader.readAsText(file);
@@ -305,29 +450,70 @@
 
   $("introModeButton").onclick = () => show("introForm");
   $("futureModeButton").onclick = () => show("futureWelcome");
-  $("copyPracticeModeButton").onclick = () => { practiceIndex = 0; show("copyPractice"); renderPractice(); };
+  $("copyPracticeModeButton").onclick = () => {
+    practiceIndex = 0;
+    show("copyPractice");
+    renderPractice();
+  };
   $("homeButton").onclick = () => show("home");
   $("makeIntroButton").onclick = makeIntro;
   $("editIntroButton").onclick = () => show("introForm");
-  $("copyIntroButton").onclick = () => copyText($("introText").value, "introCopyStatus", "복사했어요! 제미나이에 붙여넣으세요.");
-  $("saveIntroButton").onclick = () => saveText($("introText").value, "제미나이_자기소개_질문.txt");
-  $("copyFallbackButton").onclick = () => copyText($("fallbackIntroText").value, "fallbackCopyStatus", "복사했어요! 구글 홈페이지에 붙여넣으세요.");
+  $("copyIntroButton").onclick = () =>
+    copyText(
+      $("introText").value,
+      "introCopyStatus",
+      "복사했어요! 제미나이에 붙여넣으세요.",
+    );
+  $("saveIntroButton").onclick = () =>
+    saveText($("introText").value, "제미나이_자기소개_질문.txt");
+  $("copyFallbackButton").onclick = () =>
+    copyText(
+      $("fallbackIntroText").value,
+      "fallbackCopyStatus",
+      "복사했어요! 구글 홈페이지에 붙여넣으세요.",
+    );
 
-  $("favoriteChoices").querySelectorAll("button").forEach((button) => {
-    button.onclick = () => {
-      favoriteChoice = button.dataset.value;
-      $("favoriteChoices").querySelectorAll("button").forEach((item) => item.classList.toggle("selected", item === button));
-      if (!$("introFavorite").value.trim()) $("introFavorite").placeholder = `선택: ${favoriteChoice}`;
-    };
-  });
+  $("favoriteChoices")
+    .querySelectorAll("button")
+    .forEach((button) => {
+      button.onclick = () => {
+        favoriteChoice = button.dataset.value;
+        $("favoriteChoices")
+          .querySelectorAll("button")
+          .forEach((item) =>
+            item.classList.toggle("selected", item === button),
+          );
+        if (!$("introFavorite").value.trim())
+          $("introFavorite").placeholder = `선택: ${favoriteChoice}`;
+      };
+    });
 
-  $("startButton").onclick = () => { stepIndex = 0; show("picker"); renderStep(); };
-  $("prevButton").onclick = () => { if (stepIndex > 0) { stepIndex -= 1; renderStep(); } };
+  $("startButton").onclick = () => {
+    stepIndex = 0;
+    show("picker");
+    renderStep();
+  };
+  $("prevButton").onclick = () => {
+    if (stepIndex > 0) {
+      stepIndex -= 1;
+      renderStep();
+    }
+  };
   $("nextButton").onclick = nextStep;
   $("skipButton").onclick = skipStep;
-  $("copyButton").onclick = () => copyText($("promptText").value, "copyStatus", "복사했어요! 생성형 AI에 붙여넣으세요.");
-  $("saveButton").onclick = () => saveText($("promptText").value, "미래의_나_AI_문장.txt");
-  $("restartFutureButton").onclick = () => { stepIndex = 0; show("picker"); renderStep(); };
+  $("copyButton").onclick = () =>
+    copyText(
+      $("promptText").value,
+      "copyStatus",
+      "복사했어요! 생성형 AI에 붙여넣으세요.",
+    );
+  $("saveButton").onclick = () =>
+    saveText($("promptText").value, "미래의_나_AI_문장.txt");
+  $("restartFutureButton").onclick = () => {
+    stepIndex = 0;
+    show("picker");
+    renderStep();
+  };
   document.addEventListener("selectionchange", () => {
     if (!$("copyPractice").classList.contains("hidden")) {
       checkPracticeSelection();
@@ -336,5 +522,7 @@
   document.addEventListener("keydown", handlePracticeShortcut);
   $("practiceInput").addEventListener("input", checkPracticeText);
   $("practiceNextButton").onclick = nextPractice;
-  $("importResult").onchange = (event) => { if (event.target.files[0]) importFirst(event.target.files[0]); };
+  $("importResult").onchange = (event) => {
+    if (event.target.files[0]) importFirst(event.target.files[0]);
+  };
 })();
