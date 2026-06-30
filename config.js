@@ -47,13 +47,13 @@ window.PROMPT_APP_CONFIG = {
           value: "happy",
           label: "기분이 좋아요",
           image: "assets/cards/freelaugh.png",
-          prompt: "저는 기분이 좋은상태입니다",
+          prompt: "저는 기분이 좋은 상태입니다",
         },
         {
           value: "calm",
           label: "편안해요",
           image: "assets/cards/relex.png",
-          prompt: "현재의 편안한 마음상태입니다",
+          prompt: "현재의 편안한 마음 상태입니다",
         },
         {
           value: "nervous",
@@ -122,6 +122,12 @@ window.PROMPT_APP_CONFIG = {
           label: "빵 만들기",
           image: "assets/activities/istockphoto-1225037151-1024x1024.jpg",
           prompt: "빵을 만들고 정성스럽게 포장하는",
+        },
+        {
+          value: "drink",
+          label: "음료 만들기",
+          image: "assets/cards/cafe.jpg",
+          prompt: "음료를 만들고 손님에게 친절하게 전달하는",
         },
         {
           value: "animal_care",
