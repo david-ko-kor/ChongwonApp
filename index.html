@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>나의 미래 이야기</title>
+  <!-- <title>나의 미래 이야기</title> -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,7 +12,7 @@
   <header>
     <div>
       <p class="eyebrow">원주청원 학교 맞춤활동</p>
-      <h1>나의 미래 이야기</h1>
+      <!-- <h1>나의 미래 이야기</h1> -->
     </div>
     <button id="homeButton" class="home-button hidden" type="button">⌂ 처음 화면</button>
   </header>
@@ -20,35 +20,55 @@
   <main>
     <section id="home" class="home-screen">
       <div class="home-title">
-        <span class="badge">하고 싶은 활동을 눌러요</span>
+        <!-- <span class="badge">하고 싶은 활동을 눌러요</span> -->
         <h2>오늘은 무엇을 할까요?</h2>
-        <p>한 번에 한 가지 활동만 해요.</p>
+        <!-- <p>한 번에 한 가지 활동만 해요.</p> -->
       </div>
       <div class="mission-grid">
-        <button id="introModeButton" class="mission-card intro-card" type="button">
-          <!-- <span class="mission-icon" aria-hidden="true">👋</span> -->
-          <!-- <span class="mission-step">4차시</span> -->
+        <button id="introModeButton" class="mission-card intro-card" type="button" aria-label="나를 소개해요">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <circle cx="32" cy="23" r="10"></circle>
+              <path d="M16 51c3.5-10 11-15 16-15s12.5 5 16 15"></path>
+            </svg></span>
           <strong>나를 소개해요</strong>
-          <small>내 정보를 넣고<br>제미나이 질문을 만들어요.</small>
+          <!-- <small>내 정보를 넣고<br>제미나이 질문을 만들어요.</small> -->
         </button>
-        <button id="futureModeButton" class="mission-card future-card" type="button">
-          <!-- <span class="mission-icon" aria-hidden="true">🎨</span> -->
-          <!-- <span class="mission-step">3차시</span> -->
-          <strong>미래의 나를만들어요</strong>
-          <small>그림을 고르고<br>AI 문장을 만들어요.</small>
+        <button id="futureModeButton" class="mission-card future-card" type="button" aria-label="미래의 나를 만들어요">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <path d="M32 8l5.8 15.2L54 29l-15.2 5.8L32 56l-6.8-21.2L10 29l16.2-5.8L32 8z"></path>
+              <path d="M49 8v10"></path>
+              <path d="M44 13h10"></path>
+            </svg></span>
+          <strong>미래의 나</strong>
+          <!-- <small>그림을 고르고<br>AI 문장을 만들어요.</small> -->
         </button>
-        <button id="copyPracticeModeButton" class="mission-card practice-card" type="button">
-          <strong>복사 붙여넣기 연습</strong>
-          <small>드래그하고<br>Ctrl+C, Ctrl+V를 연습해요.</small>
+        <button id="copyPracticeModeButton" class="mission-card practice-card" type="button" aria-label="복사 붙여넣기 연습">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <rect x="22" y="14" width="28" height="36" rx="5"></rect>
+              <path d="M14 22v28a6 6 0 0 0 6 6h22"></path>
+              <path d="M29 27h14"></path>
+              <path d="M29 37h10"></path>
+            </svg></span>
+          <strong>연습</strong>
+
+        </button>
+        <button id="securityModeButton" class="mission-card security-card" type="button" aria-label="AI 보안 테스트">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <path d="M32 7l20 8v14c0 13-8.5 23-20 28C20.5 52 12 42 12 29V15l20-8z"></path>
+              <path d="M32 21v16"></path>
+              <path d="M32 45h.1"></path>
+            </svg></span>
+          <strong>AI와 보안</strong>
+          <!-- <small>넣어도 되는 정보와<br>위험한 정보를 구별해요.</small> -->
         </button>
       </div>
-      <div class="privacy-note">🔒 개인정보,자세한 주소, 전화번호는 쓰지 않아요.</div>
+      <div class="privacy-note">개인정보,자세한 주소, 전화번호는 쓰지 않아요.</div>
     </section>
 
     <section id="introForm" class="panel hidden" aria-live="polite">
       <!-- <span class="badge green">4차시 활동</span> -->
       <h2>나를 소개해요</h2>
-      <p class="lead">짧게 써도 괜찮아요. 모르는 칸은 비워도 돼요.</p>
+      <!-- <p class="lead">짧게 써도 괜찮아요. 모르는 칸은 비워도 돼요.</p> -->
 
       <div class="form-grid">
         <label class="field">
@@ -185,7 +205,7 @@
     <section id="copyPractice" class="panel practice-panel hidden" aria-live="polite">
       <span class="badge orange">연습 활동</span>
       <h2>복사 붙여넣기 연습</h2>
-      <p class="lead">처음에는 드래그만, 다음에는 복사, 마지막에는 붙여넣기까지 연습해요.</p>
+      <!-- <p class="lead">처음에는 드래그만, 다음에는 복사, 마지막에는 붙여넣기까지 연습해요.</p> -->
       <div class="practice-stage">
         <p id="practiceStepText" class="practice-step-text"></p>
         <p id="practiceGuide" class="practice-guide-text"></p>
@@ -205,6 +225,47 @@
         <h3>연습 순서</h3>
         <p><strong>1-4단계 드래그</strong> → <strong>5-7단계 드래그+Ctrl+C</strong> → <strong>8-10단계 드래그+Ctrl+C+Ctrl+V</strong></p>
       </div> -->
+    </section>
+
+    <section id="securityTest" class="panel security-panel hidden" aria-live="polite">
+      <span class="badge red">보안 활동</span>
+      <h2>AI 보안 테스트</h2>
+      <p class="lead">문장을 넣어 보고, AI에 넣으면 위험한 정보인지 확인해요.</p>
+
+      <div class="security-layout">
+        <section class="security-input-card">
+          <h3>1. 테스트할 내용을 넣어요</h3>
+          <textarea id="securityInput" rows="7" placeholder="예: 저는 떡볶이를 좋아해요." autocomplete="off"></textarea>
+          <label class="security-file" for="securityPhoto">
+            <span>사진 파일 넣어보기</span>
+            <input id="securityPhoto" type="file" accept="image/*">
+          </label>
+          <div class="security-actions">
+            <button id="securityCheckButton" class="primary red-bg" type="button">확인하기</button>
+            <button id="securityResetButton" class="secondary red-border" type="button">다시 하기</button>
+          </div>
+        </section>
+
+        <section id="securityResult" class="security-result-box neutral">
+          <div id="securityResultIcon" class="security-result-icon" aria-hidden="true">?</div>
+          <h3 id="securityResultTitle">아직 확인하지 않았어요</h3>
+          <p id="securityResultText">왼쪽 칸에 문장을 넣고 확인하기를 눌러요.</p>
+          <ul id="securityReasonList"></ul>
+        </section>
+      </div>
+
+      <div class="security-example-grid" aria-label="예시 문장">
+        <button type="button" data-example="제 이름은 고래미 이고 전화번호는 010-1234-5678입니다.">개인정보 예시</button>
+        <button type="button" data-example="제 비밀번호는 happy1234! 입니다.">비밀번호 예시</button>
+        <button type="button" data-example="저는 강원도 원주시 무실동 101동에 살아요.">주소 예시</button>
+        <button type="button" data-example="저는 피자를 좋아합니다.">안전한 문장 예시</button>
+        <button type="button" data-example="저는 바리스타 일을 해보고 싶어요.">직업 관심 예시</button>
+      </div>
+
+      <div class="paste-guide red-guide">
+        <h3>기억할 말</h3>
+        <p><strong>이름, 전화번호, 주소, 비밀번호, 사진</strong>은 AI에 넣기 전에 선생님과 먼저 확인해요.</p>
+      </div>
     </section>
   </main>
   <script src="config.js"></script>

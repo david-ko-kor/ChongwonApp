@@ -163,7 +163,7 @@ window.PROMPT_APP_CONFIG = {
     },
     {
       id: "futureMood",
-      title: "미래의 나는 어떤 표정이면 좋을까요?",
+      title: "미래의 나는 어떤 표정일 까요?",
       help: "원하는 미래의 기분을 골라요.",
       options: [
         {

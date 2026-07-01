@@ -10,6 +10,7 @@
     "picker",
     "futureResult",
     "copyPractice",
+    "securityTest",
   ];
   let stepIndex = 0;
   let practiceIndex = 0;
@@ -206,6 +207,97 @@
         }
       }, 50);
     }
+  }
+
+  function securityFindings() {
+    const text = $("securityInput").value.trim();
+    const findings = [];
+    const rules = [
+      {
+        name: "전화번호",
+        message: "전화번호는 다른 사람이 연락할 수 있는 개인정보예요.",
+        test: /01[016789][-\s.]?\d{3,4}[-\s.]?\d{4}/,
+      },
+      {
+        name: "이메일",
+        message: "이메일 주소는 로그인이나 연락에 쓰일 수 있어요.",
+        test: /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,
+      },
+      {
+        name: "비밀번호",
+        message: "비밀번호는 절대 AI에 넣지 않아요.",
+        test:
+          /(비밀번호|비번|password|passcode|pw)\s*[:은는]?\s*\S{4,}|(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[^\s]{6,}/i,
+      },
+      {
+        name: "주소",
+        message: "자세한 주소는 집이나 학교 위치를 알 수 있어요.",
+        test:
+          /(주소|사는 곳|살아요|아파트|빌라|원룸|동\s?\d+|호\s?\d+|번지|도로명|원주시|서울|부산|대구|인천|광주|대전|울산|세종|경기도|강원도|충청|전라|경상|제주).*(동|아파트|빌라|원룸|호|로|길|번지)?/,
+      },
+      {
+        name: "이름",
+        message: "실명은 AI에 넣기 전에 선생님과 먼저 확인해요.",
+        test:
+          /(이름|실명|본명)\s*(은|는|:)?\s*[가-힣]{2,5}|저는\s*[가-힣]{2,4}(입니다|이에요|예요)/,
+      },
+    ];
+
+    rules.forEach((rule) => {
+      if (rule.test.test(text)) findings.push(rule);
+    });
+
+    if ($("securityPhoto").files.length) {
+      findings.push({
+        name: "사진",
+        message: "사진에는 얼굴, 교복, 장소가 보일 수 있어요.",
+      });
+    }
+
+    return { text, findings };
+  }
+
+  function renderSecurityResult() {
+    const { text, findings } = securityFindings();
+    const hasPhoto = $("securityPhoto").files.length > 0;
+    $("securityResult").classList.remove("safe", "danger", "neutral");
+
+    if (!text && !hasPhoto) {
+      $("securityResult").classList.add("neutral");
+      $("securityResultIcon").textContent = "?";
+      $("securityResultTitle").textContent = "아직 확인하지 않았어요";
+      $("securityResultText").textContent =
+        "왼쪽 칸에 문장을 넣고 확인하기를 눌러요.";
+      $("securityReasonList").innerHTML = "";
+      return;
+    }
+
+    if (findings.length) {
+      $("securityResult").classList.add("danger");
+      $("securityResultIcon").textContent = "!";
+      $("securityResultTitle").textContent = "경고! 멈춰요";
+      $("securityResultText").textContent =
+        "AI에 넣으면 위험할 수 있는 정보가 보여요.";
+      $("securityReasonList").innerHTML = findings
+        .map((item) => `<li><strong>${html(item.name)}</strong><span>${html(item.message)}</span></li>`)
+        .join("");
+      return;
+    }
+
+    $("securityResult").classList.add("safe");
+    $("securityResultIcon").textContent = "✓";
+    $("securityResultTitle").textContent = "좋아요. 개인정보가 보이지 않아요";
+    $("securityResultText").textContent =
+      "좋아하는 것, 하고 싶은 일처럼 일반적인 내용은 비교적 안전해요.";
+    $("securityReasonList").innerHTML =
+      "<li><strong>안전</strong><span>그래도 AI에 넣기 전에는 한 번 더 읽어봐요.</span></li>";
+  }
+
+  function resetSecurityTest() {
+    $("securityInput").value = "";
+    $("securityPhoto").value = "";
+    renderSecurityResult();
+    $("securityInput").focus();
   }
 
   function makeIntro() {
@@ -495,6 +587,10 @@
     show("copyPractice");
     renderPractice();
   };
+  $("securityModeButton").onclick = () => {
+    show("securityTest");
+    renderSecurityResult();
+  };
   $("homeButton").onclick = () => show("home");
   $("makeIntroButton").onclick = makeIntro;
   $("editIntroButton").onclick = () => show("introForm");
@@ -562,6 +658,19 @@
   document.addEventListener("keydown", handlePracticeShortcut);
   $("practiceInput").addEventListener("input", checkPracticeText);
   $("practiceNextButton").onclick = nextPractice;
+  $("securityCheckButton").onclick = renderSecurityResult;
+  $("securityResetButton").onclick = resetSecurityTest;
+  $("securityInput").addEventListener("input", renderSecurityResult);
+  $("securityPhoto").addEventListener("change", renderSecurityResult);
+  document
+    .querySelectorAll(".security-example-grid button")
+    .forEach((button) => {
+      button.onclick = () => {
+        $("securityInput").value = button.dataset.example;
+        $("securityPhoto").value = "";
+        renderSecurityResult();
+      };
+    });
   $("importResult").onchange = (event) => {
     if (event.target.files[0]) importFirst(event.target.files[0]);
   };
