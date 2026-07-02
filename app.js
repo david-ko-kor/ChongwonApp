@@ -226,20 +226,17 @@
       {
         name: "비밀번호",
         message: "비밀번호는 절대 AI에 넣지 않아요.",
-        test:
-          /(비밀번호|비번|password|passcode|pw)\s*[:은는]?\s*\S{4,}|(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[^\s]{6,}/i,
+        test: /(비밀번호|비번|password|passcode|pw)\s*[:은는]?\s*\S{4,}|(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[^\s]{6,}/i,
       },
       {
         name: "주소",
         message: "자세한 주소는 집이나 학교 위치를 알 수 있어요.",
-        test:
-          /(주소|사는 곳|살아요|아파트|빌라|원룸|동\s?\d+|호\s?\d+|번지|도로명|원주시|서울|부산|대구|인천|광주|대전|울산|세종|경기도|강원도|충청|전라|경상|제주).*(동|아파트|빌라|원룸|호|로|길|번지)?/,
+        test: /(주소|사는 곳|살아요|아파트|빌라|원룸|동\s?\d+|호\s?\d+|번지|도로명|원주시|서울|부산|대구|인천|광주|대전|울산|세종|경기도|강원도|충청|전라|경상|제주).*(동|아파트|빌라|원룸|호|로|길|번지)?/,
       },
       {
         name: "이름",
         message: "실명은 AI에 넣기 전에 선생님과 먼저 확인해요.",
-        test:
-          /(이름|실명|본명)\s*(은|는|:)?\s*[가-힣]{2,5}|저는\s*[가-힣]{2,4}(입니다|이에요|예요)/,
+        test: /(이름|실명|본명)\s*(은|는|:)?\s*[가-힣]{2,5}|저는\s*[가-힣]{2,4}(입니다|이에요|예요)/,
       },
     ];
 
@@ -279,7 +276,10 @@
       $("securityResultText").textContent =
         "AI에 넣으면 위험할 수 있는 정보가 보여요.";
       $("securityReasonList").innerHTML = findings
-        .map((item) => `<li><strong>${html(item.name)}</strong><span>${html(item.message)}</span></li>`)
+        .map(
+          (item) =>
+            `<li><strong>${html(item.name)}</strong><span>${html(item.message)}</span></li>`,
+        )
         .join("");
       return;
     }
@@ -387,7 +387,7 @@
       const item = cfg.steps.find((candidate) => candidate.id === id);
       return chosen(item)?.prompt || fallback[id];
     };
-    return `${value("currentState")}, 미래의 나를 표현해 주세요. ${value("character")}가 ${value("place")}에서 ${value("activity")} 모습입니다. ${value("futureMood")}으로 표현하고, ${value("style")} 스타일로 만들어 주세요. 고등학생에게 알맞고 존중감 있게 표현하며, 배경은 단순하게 해 주세요. 그림 안에 글자, 로고, 워터마크는 넣지 마세요.`;
+    return `${value("currentState")}, 미래의 나를 표현해 주세요. ${value("character")}가 ${value("place")}에서 ${value("activity")} 모습입니다. ${value("futureMood")}으로 표현하고, ${value("style")} 스타일로 만들어 주세요. 고등학생에게 알맞고 존중감 있게 표현하며, 배경은 단순하게 해 주세요. 그림 안에 글자, 로고, 워터마크는 넣지 마세요.사진 1:1로 만들어주세요`;
   }
 
   function makeSpeakerQuestionSet() {
