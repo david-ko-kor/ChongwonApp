@@ -714,11 +714,10 @@
   $("makeIntroButton").onclick = makeIntro;
   $("editIntroButton").onclick = () => show("introForm");
   $("copyIntroButton").onclick = () => {
-    window.open("https://wrtn.ai/", "_blank", "noopener");
     copyText(
       $("introText").value,
       "introCopyStatus",
-      "복사했어요! 뤼튼에 붙여넣으세요.",
+      "복사했어요! 필요하면 오른쪽의 뤼튼으로 이동을 눌러요.",
     );
   };
   $("saveIntroButton").onclick = () =>
