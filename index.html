@@ -25,22 +25,21 @@
         <!-- <p>한 번에 한 가지 활동만 해요.</p> -->
       </div>
       <div class="mission-grid">
-        <button id="introModeButton" class="mission-card intro-card" type="button" aria-label="나를 소개해요">
-          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
-              <circle cx="32" cy="23" r="10"></circle>
-              <path d="M16 51c3.5-10 11-15 16-15s12.5 5 16 15"></path>
-            </svg></span>
-          <strong>나를 소개해요</strong>
-          <!-- <small>내 정보를 넣고<br>제미나이 질문을 만들어요.</small> -->
-        </button>
-        <button id="futureModeButton" class="mission-card future-card" type="button" aria-label="미래의 나를 만들어요">
-          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
-              <path d="M32 8l5.8 15.2L54 29l-15.2 5.8L32 56l-6.8-21.2L10 29l16.2-5.8L32 8z"></path>
-              <path d="M49 8v10"></path>
-              <path d="M44 13h10"></path>
-            </svg></span>
-          <strong>미래의 나</strong>
+        <button id="speakerModeButton" class="mission-card future-card" type="button" aria-label="금쪽이 스피커 질문지">
+          <span class="mission-icon" aria-hidden="true">
+            <img src="assets/cards/gold-speaker.svg" alt="">
+          </span>
+          <strong>금쪽이</strong>
           <!-- <small>그림을 고르고<br>AI 문장을 만들어요.</small> -->
+        </button>
+        <button id="securityModeButton" class="mission-card security-card" type="button" aria-label="AI 보안 테스트">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <path d="M32 7l20 8v14c0 13-8.5 23-20 28C20.5 52 12 42 12 29V15l20-8z"></path>
+              <path d="M32 21v16"></path>
+              <path d="M32 45h.1"></path>
+            </svg></span>
+          <strong>AI와 보안</strong>
+          <!-- <small>넣어도 되는 정보와<br>위험한 정보를 구별해요.</small> -->
         </button>
         <button id="copyPracticeModeButton" class="mission-card practice-card" type="button" aria-label="복사 붙여넣기 연습">
           <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
@@ -52,15 +51,27 @@
           <strong>연습</strong>
 
         </button>
-        <button id="securityModeButton" class="mission-card security-card" type="button" aria-label="AI 보안 테스트">
+        <button id="futureModeButton" class="mission-card future-card" type="button" aria-label="미래의 나를 만들어요">
           <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
-              <path d="M32 7l20 8v14c0 13-8.5 23-20 28C20.5 52 12 42 12 29V15l20-8z"></path>
-              <path d="M32 21v16"></path>
-              <path d="M32 45h.1"></path>
+              <path d="M32 8l5.8 15.2L54 29l-15.2 5.8L32 56l-6.8-21.2L10 29l16.2-5.8L32 8z"></path>
+              <path d="M49 8v10"></path>
+              <path d="M44 13h10"></path>
             </svg></span>
-          <strong>AI와 보안</strong>
-          <!-- <small>넣어도 되는 정보와<br>위험한 정보를 구별해요.</small> -->
+          <strong>미래의 나</strong>
+          <!-- <small>그림을 고르고<br>AI 문장을 만들어요.</small> -->
         </button>
+        <button id="introModeButton" class="mission-card intro-card" type="button" aria-label="나를 소개해요">
+          <span class="mission-icon" aria-hidden="true"><svg viewBox="0 0 64 64">
+              <circle cx="32" cy="23" r="10"></circle>
+              <path d="M16 51c3.5-10 11-15 16-15s12.5 5 16 15"></path>
+            </svg></span>
+          <strong>나를 소개해요</strong>
+          <!-- <small>내 정보를 넣고<br>제미나이 질문을 만들어요.</small> -->
+        </button>
+
+
+
+
       </div>
       <div class="privacy-note">개인정보,자세한 주소, 전화번호는 쓰지 않아요.</div>
     </section>
@@ -90,14 +101,10 @@
           <input id="introRegion" type="text" maxlength="12" placeholder="예: 서울, 경기도" autocomplete="off">
           <small>동·아파트·자세한 주소는 쓰지 않아요.</small>
         </label>
-        <label class="field">
-          <span><b>4. 좋아하는 것</b></span>
-          <input id="introFavorite" type="text" maxlength="24" placeholder="예: 햄버거, 강아지" autocomplete="off">
-        </label>
       </div>
 
       <fieldset class="choice-field">
-        <legend>좋아하는 그림을 하나 골라도 좋아요.</legend>
+        <legend>4. 내가 좋아하는 것 그림을 골라요.</legend>
         <div id="favoriteChoices" class="small-choices">
           <button type="button" data-value="맛있는 음식"><span>🍕</span>맛있는 음식</button>
           <button type="button" data-value="동물"><span>🐶</span>동물</button>
@@ -108,26 +115,39 @@
         </div>
       </fieldset>
 
-      <label class="field full">
-        <span><b>5. 해보고 싶은 일</b></span>
-        <input id="introJob" type="text" maxlength="30" placeholder="예: 동물 돌보기, 빵 만들기" autocomplete="off">
-      </label>
+      <fieldset class="choice-field">
+        <legend>5. 내가 잘하는 일 그림을 골라요.</legend>
+        <div id="strengthChoices" class="small-choices">
+          <button type="button" data-value="정리하기"><span>🧺</span>정리하기</button>
+          <button type="button" data-value="만들기"><span>🧁</span>만들기</button>
+          <button type="button" data-value="그림 그리기"><span>🎨</span>그림 그리기</button>
+          <button type="button" data-value="컴퓨터 하기"><span>💻</span>컴퓨터</button>
+          <button type="button" data-value="친구 도와주기"><span>🤝</span>도와주기</button>
+          <button type="button" data-value="동물 돌보기"><span>🐾</span>동물 돌보기</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="choice-field intro-writing-field">
+        <legend>6. 생성형 AI에게 부탁하고 싶은 말을 써요.</legend>
+        <textarea id="introRequest" rows="4" maxlength="80" placeholder="예: 짧고 쉬운 말로 써 주세요."></textarea>
+      </fieldset>
 
       <div class="center-actions">
-        <button id="makeIntroButton" class="primary green-bg" type="button">제미나이 질문 만들기</button>
+        <button id="makeIntroButton" class="primary green-bg" type="button">생성형 AI 질문 만들기</button>
       </div>
       <p id="introFormStatus" class="status" aria-live="assertive"></p>
     </section>
 
     <section id="introResult" class="result intro-result hidden" aria-live="polite">
-      <span class="badge green">제미나이 질문 완성!</span>
-      <h2>제미나이에게 부탁할 문장</h2>
+      <span class="badge green">생성형 AI 질문 완성!</span>
+      <h2>생성형 AI에게 부탁할 문장</h2>
       <p class="safe-label">✅ 자세한 주소와 전화번호는 질문에 들어가지 않아요.</p>
-      <textarea id="introText" rows="11" aria-label="제미나이 자기소개 질문"></textarea>
+      <textarea id="introText" rows="11" aria-label="생성형 AI 자기소개 질문"></textarea>
       <div class="result-buttons">
         <button id="copyIntroButton" class="primary green-bg" type="button">제미나이 질문 복사하기</button>
         <button id="editIntroButton" class="secondary green-border" type="button">다시 고치기</button>
         <button id="saveIntroButton" class="secondary green-border" type="button">질문 저장</button>
+        <a class="secondary green-border action-link" href="https://wrtn.ai/" target="_blank" rel="noopener">뤼튼으로 이동</a>
       </div>
       <p id="introCopyStatus" class="copy-status" aria-live="assertive"></p>
       <!-- <div class="paste-guide green-guide">
@@ -136,7 +156,7 @@
             확인</strong></p>
       </div> -->
       <details class="fallback-box">
-        <summary>제미나이가 어려우면 여기를 눌러요</summary>
+        <summary>생성형 AI가 어려우면 여기를 눌러요</summary>
         <p>아래 문장은 구글 홈페이지에 바로 사용할 수 있어요.</p>
         <textarea id="fallbackIntroText" rows="6" aria-label="바로 사용하는 자기소개 문장"></textarea>
         <button id="copyFallbackButton" class="secondary green-border" type="button">바로 쓰는 문장 복사하기</button>
@@ -183,14 +203,9 @@
       <div id="summary" class="summary"></div>
       <label class="prompt-label" for="promptText">필요하면 선생님과 함께 문장을 고쳐요.</label>
       <textarea id="promptText" rows="9"></textarea>
-      <section class="speaker-result" aria-labelledby="speakerTitle">
-        <h3 id="speakerTitle">금쪽이 스피커 질문</h3>
-        <p id="speakerJobText"></p>
-        <ol id="speakerQuestions"></ol>
-      </section>
       <div class="result-buttons">
         <button id="copyButton" class="primary" type="button">AI 문장 복사하기</button>
-        <button id="saveButton" class="secondary" type="button">문장 저장</button>
+        <a href="https://duck.ai/" target="_blank" rel="noopener" class="secondary duck-link">Duck AI 열기</a>
         <button id="restartFutureButton" class="secondary" type="button">다시 고르기</button>
       </div>
       <p id="copyStatus" class="copy-status" aria-live="assertive"></p>
@@ -200,6 +215,20 @@
             선택</strong></p>
         <p>🔒 이름·주소·전화번호는 AI에 입력하지 않아요.</p>
       </div> -->
+    </section>
+
+    <section id="speakerResult" class="result speaker-only-result hidden" aria-live="polite">
+      <span class="badge">금쪽이 질문지 완성!</span>
+      <h2>금쪽이 스피커 질문지</h2>
+      <div id="speakerSummary" class="summary"></div>
+      <label class="prompt-label" for="speakerText">금쪽이 스피커에게 물어볼 질문만 나와요.</label>
+      <textarea id="speakerText" rows="9" aria-label="금쪽이 스피커 질문지"></textarea>
+      <div class="result-buttons">
+        <button id="copySpeakerButton" class="primary" type="button">질문지 복사하기</button>
+        <button id="saveSpeakerButton" class="secondary" type="button">질문지 저장</button>
+        <button id="restartSpeakerButton" class="secondary" type="button">다시 고르기</button>
+      </div>
+      <p id="speakerCopyStatus" class="copy-status" aria-live="assertive"></p>
     </section>
 
     <section id="copyPractice" class="panel practice-panel hidden" aria-live="polite">

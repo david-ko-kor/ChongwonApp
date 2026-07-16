@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="금쪽이 스피커">
+  <defs>
+    <linearGradient id="body" x1="60" y1="40" x2="196" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff4a8"/>
+      <stop offset="0.54" stop-color="#ffd45d"/>
+      <stop offset="1" stop-color="#ffb23e"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="88" y1="84" x2="168" y2="164" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ddf7ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="#f1fbff"/>
+  <circle cx="204" cy="54" r="16" fill="#8fd7ff"/>
+  <circle cx="50" cy="198" r="18" fill="#d7f7ad"/>
+  <path d="M61 138c-18 0-31-13-31-30s13-30 31-30" fill="none" stroke="#2f76c2" stroke-width="12" stroke-linecap="round"/>
+  <path d="M195 78c18 0 31 13 31 30s-13 30-31 30" fill="none" stroke="#2f76c2" stroke-width="12" stroke-linecap="round"/>
+  <rect x="58" y="46" width="140" height="174" rx="42" fill="url(#body)" stroke="#1f3761" stroke-width="8"/>
+  <rect x="82" y="72" width="92" height="92" rx="30" fill="url(#screen)" stroke="#1f3761" stroke-width="6"/>
+  <circle cx="110" cy="112" r="7" fill="#1f3761"/>
+  <circle cx="146" cy="112" r="7" fill="#1f3761"/>
+  <path d="M111 137c9 9 25 9 34 0" fill="none" stroke="#1f3761" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="128" cy="190" r="12" fill="#ffffff" stroke="#1f3761" stroke-width="6"/>
+  <path d="M194 36l5 13 14 5-14 5-5 13-5-13-14-5 14-5 5-13z" fill="#ffda57" stroke="#1f3761" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M44 47c9-12 25-13 36-3" fill="none" stroke="#67b8ff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M212 178c-4 15-17 25-33 26" fill="none" stroke="#67b8ff" stroke-width="8" stroke-linecap="round"/>
+</svg>

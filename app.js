@@ -9,15 +9,19 @@
     "futureWelcome",
     "picker",
     "futureResult",
+    "speakerResult",
     "copyPractice",
     "securityTest",
   ];
   let stepIndex = 0;
+  let activeMode = "future";
   let practiceIndex = 0;
   let practiceSelected = false;
   let practiceCopied = false;
   let favoriteChoice = "";
+  let strengthChoice = "";
   const answers = {};
+  const speakerAnswers = {};
   const practiceItems = [
     {
       text: "안녕",
@@ -304,9 +308,9 @@
     const name = $("introName").value.trim();
     const grade = $("introGrade").value;
     const region = $("introRegion").value.trim();
-    const typedFavorite = $("introFavorite").value.trim();
-    const favorite = typedFavorite || favoriteChoice;
-    const job = $("introJob").value.trim();
+    const favorite = favoriteChoice;
+    const strength = strengthChoice;
+    const introRequest = $("introRequest").value.trim();
     if (!name) {
       $("introFormStatus").textContent = "이름 또는 별명을 써 주세요.";
       $("introName").focus();
@@ -315,7 +319,8 @@
     const information = [`별명 또는 이름: ${name}`];
     if (grade) information.push(`학년: ${grade}`);
     if (favorite) information.push(`좋아하는 것: ${favorite}`);
-    if (job) information.push(`해보고 싶은 일: ${job}`);
+    if (strength) information.push(`잘하는 일: ${strength}`);
+    if (introRequest) information.push(`추가 부탁: ${introRequest}`);
     $("introText").value = [
       "다음 정보를 이용하여 고등학생의 자기소개를 만들어 주세요.",
       "쉬운 말과 짧은 문장으로 4문장만 작성해 주세요.",
@@ -329,49 +334,125 @@
     if (grade) sentences.push(`저는 ${grade}입니다.`);
     if (region) sentences.push(`저는 ${region}에 살고 있습니다.`);
     if (favorite) sentences.push(`제가 좋아하는 것은 ${favorite}입니다.`);
-    if (job) sentences.push(`저는 앞으로 ${job}를 해보고 싶습니다.`);
+    if (strength) sentences.push(`제가 잘하는 일은 ${strength}입니다.`);
     $("fallbackIntroText").value = sentences.join(" ");
     $("introFormStatus").textContent = "";
     $("introCopyStatus").textContent = "";
     show("introResult");
   }
 
+  function speakerSteps() {
+    const byId = (id) => cfg.steps.find((item) => item.id === id);
+    return [
+      {
+        ...byId("character"),
+        title: "1. 캐릭터를 골라요",
+        help: "금쪽이 질문지에 들어갈 나의 캐릭터를 하나 골라요.",
+      },
+      {
+        ...byId("activity"),
+        title: "2. 내가 재미있어 하는 일은 무엇인가요?",
+        help: "해보면 재미있을 것 같은 일을 하나 골라요.",
+      },
+      {
+        ...byId("place"),
+        title: "3. 내가 좋아하는 장소는 어디인가요?",
+        help: "가보고 싶거나 편안한 장소를 하나 골라요.",
+      },
+      {
+        ...byId("futureMood"),
+        title: "4. 나는 이런 표정을 좋아해요",
+        help: "내 마음과 가까운 표정을 하나 골라요.",
+      },
+    ];
+  }
+
+  function currentSteps() {
+    return activeMode === "speaker" ? speakerSteps() : cfg.steps;
+  }
+
+  function currentAnswers() {
+    return activeMode === "speaker" ? speakerAnswers : answers;
+  }
+
   function step() {
-    return cfg.steps[stepIndex];
+    return currentSteps()[stepIndex];
   }
   function optionByValue(s, value) {
+    if (!s?.options) return null;
     return s.options.find((option) => option.value === value);
   }
-  function chosen(s) {
-    return optionByValue(s, answers[s.id]);
+  function chosen(s, source = currentAnswers()) {
+    return optionByValue(s, source[s.id]);
   }
 
   function renderStep() {
     const current = step();
+    const steps = currentSteps();
+    const answerSet = currentAnswers();
     $("questionTitle").textContent = current.title;
     $("questionHelp").textContent = current.help;
-    $("progressText").textContent = `${stepIndex + 1} / ${cfg.steps.length}`;
+    $("progressText").textContent = `${stepIndex + 1} / ${steps.length}`;
     $("progressBar").style.width =
-      `${((stepIndex + 1) / cfg.steps.length) * 100}%`;
+      `${((stepIndex + 1) / steps.length) * 100}%`;
     const host = $("options");
     host.innerHTML = "";
+    if (current.type === "text") {
+      const textWrap = document.createElement("div");
+      textWrap.className = "text-step";
+      textWrap.innerHTML = `
+        <label for="extraRequestInput">AI에게 부탁할 말을 써요.</label>
+        <textarea id="extraRequestInput" rows="5" maxlength="80" placeholder="${html(current.placeholder || "")}">${html(answerSet[current.id] || "")}</textarea>
+        <div class="text-examples">${(current.examples || [])
+          .map(
+            (example) =>
+              `<button type="button" data-example="${html(example)}">${html(example)}</button>`,
+          )
+          .join("")}</div>
+      `;
+      host.appendChild(textWrap);
+      const input = $("extraRequestInput");
+      input.oninput = () => {
+        answerSet[current.id] = input.value.trim();
+      };
+      textWrap.querySelectorAll(".text-examples button").forEach((button) => {
+        button.onclick = () => {
+          input.value = button.dataset.example;
+          answerSet[current.id] = button.dataset.example;
+          input.focus();
+        };
+      });
+      $("prevButton").disabled = stepIndex === 0;
+      $("nextButton").disabled = false;
+      $("nextButton").textContent =
+        stepIndex === steps.length - 1
+          ? activeMode === "speaker"
+            ? "질문지 만들기"
+            : "AI 문장 만들기"
+          : "다음";
+      return;
+    }
     current.options.forEach((option) => {
       const button = document.createElement("button");
-      const selected = answers[current.id] === option.value;
+      const selected = answerSet[current.id] === option.value;
       button.type = "button";
       button.className = `option${selected ? " selected" : ""}`;
       button.setAttribute("aria-pressed", selected ? "true" : "false");
       button.innerHTML = `<img src="${html(option.image)}" alt=""><span>${html(option.label)}</span>`;
       button.onclick = () => {
-        answers[current.id] = option.value;
+        answerSet[current.id] = option.value;
         renderStep();
       };
       host.appendChild(button);
     });
     $("prevButton").disabled = stepIndex === 0;
-    $("nextButton").disabled = !answers[current.id];
+    $("nextButton").disabled = !answerSet[current.id];
     $("nextButton").textContent =
-      stepIndex === cfg.steps.length - 1 ? "AI 문장 만들기" : "다음";
+      stepIndex === steps.length - 1
+        ? activeMode === "speaker"
+          ? "질문지 만들기"
+          : "AI 문장 만들기"
+        : "다음";
   }
 
   function makeFuturePrompt() {
@@ -387,12 +468,12 @@
       const item = cfg.steps.find((candidate) => candidate.id === id);
       return chosen(item)?.prompt || fallback[id];
     };
-    return `${value("currentState")}, 미래의 나를 표현해 주세요. ${value("character")}가 ${value("place")}에서 ${value("activity")} 모습입니다. ${value("futureMood")}으로 표현하고, ${value("style")} 스타일로 만들어 주세요. 고등학생에게 알맞고 존중감 있게 표현하며, 배경은 단순하게 해 주세요. 그림 안에 글자, 로고, 워터마크는 넣지 마세요.사진 1:1로 만들어주세요`;
+    return `${value("currentState")}, 미래의 나를 표현해 주세요. ${value("character")}가 ${value("place")}에서 ${value("activity")} 모습입니다. ${value("futureMood")}으로 표현하고, ${value("style")} 스타일로 만들어 주세요. 고등학생에게 알맞고 존중감 있게 표현하며, 배경은 단순하게 해 주세요. 그림 안에 글자, 로고, 워터마크는 넣지 마세요. 사진 1:1로 만들어주세요`;
   }
 
-  function makeSpeakerQuestionSet() {
-    const activity = answers.activity;
-    const place = answers.place;
+  function makeSpeakerQuestionSet(source = answers) {
+    const activity = source.activity;
+    const place = source.place;
     const sets = {
       bake: {
         job: "제빵사",
@@ -520,8 +601,42 @@
     );
   }
 
+  function labelFrom(id, source = speakerAnswers) {
+    const item = speakerSteps().find((candidate) => candidate.id === id);
+    return chosen(item, source)?.label || "";
+  }
+
+  function makeSpeakerOnlyText() {
+    const speaker = makeSpeakerQuestionSet(speakerAnswers);
+    const activity = labelFrom("activity");
+    const place = labelFrom("place");
+    return [
+      `1. ${activity || speaker.job}을(를) 좋아하면 어떤 직업을 알아볼 수 있어?`,
+      `2. ${speaker.job}은 어떤 일을 해?`,
+      `3. ${place || "이 장소"}에서 할 수 있는 쉬운 일은 뭐야?`,
+      `4. ${speaker.job} 일을 하려면 무엇을 연습하면 좋아?`,
+      "5. 오늘 내가 5분 동안 해볼 수 있는 작은 활동을 알려줘.",
+    ].join("\n");
+  }
+
+  function showSpeakerResult() {
+    const selected = speakerSteps()
+      .map((item) => ({ item, option: chosen(item, speakerAnswers) }))
+      .filter((entry) => entry.option);
+    $("speakerSummary").innerHTML = selected
+      .map(
+        (entry) =>
+          `<div class="summary-item"><img src="${html(entry.option.image)}" alt=""><strong>${html(entry.option.label)}</strong></div>`,
+      )
+      .join("");
+    $("speakerText").value = makeSpeakerOnlyText();
+    $("speakerCopyStatus").textContent = "";
+    show("speakerResult");
+  }
+
   function showFutureResult() {
     const selected = cfg.steps
+      .filter((item) => item.options)
       .map((item) => ({ item, option: chosen(item) }))
       .filter((entry) => entry.option);
     $("summary").innerHTML = selected
@@ -531,29 +646,27 @@
       )
       .join("");
     $("promptText").value = makeFuturePrompt();
-    const speaker = makeSpeakerQuestionSet();
-    $("speakerJobText").textContent =
-      `${speaker.job}에 대해 AI 스피커에게 물어볼 질문입니다.`;
-    $("speakerQuestions").innerHTML = speaker.questions
-      .map((question) => `<li>${html(question)}</li>`)
-      .join("");
     $("copyStatus").textContent = "";
     show("futureResult");
   }
 
   function nextStep() {
-    if (stepIndex < cfg.steps.length - 1) {
+    const steps = currentSteps();
+    if (stepIndex < steps.length - 1) {
       stepIndex += 1;
       renderStep();
-    } else showFutureResult();
+    } else if (activeMode === "speaker") showSpeakerResult();
+    else showFutureResult();
   }
 
   function skipStep() {
-    answers[step().id] = null;
-    if (stepIndex < cfg.steps.length - 1) {
+    currentAnswers()[step().id] = null;
+    const steps = currentSteps();
+    if (stepIndex < steps.length - 1) {
       stepIndex += 1;
       renderStep();
-    } else showFutureResult();
+    } else if (activeMode === "speaker") showSpeakerResult();
+    else showFutureResult();
   }
 
   function importFirst(file) {
@@ -568,7 +681,7 @@
             (option) => option.label === data.finalJob,
           );
           if (match) answers.activity = match.value;
-          $("introJob").value = data.finalJob;
+          strengthChoice = data.finalJob;
         }
         $("importStatus").textContent =
           "불러왔어요! 동물 친구와 직업활동이 먼저 선택됩니다.";
@@ -582,6 +695,12 @@
 
   $("introModeButton").onclick = () => show("introForm");
   $("futureModeButton").onclick = () => show("futureWelcome");
+  $("speakerModeButton").onclick = () => {
+    activeMode = "speaker";
+    stepIndex = 0;
+    show("picker");
+    renderStep();
+  };
   $("copyPracticeModeButton").onclick = () => {
     practiceIndex = 0;
     show("copyPractice");
@@ -594,14 +713,16 @@
   $("homeButton").onclick = () => show("home");
   $("makeIntroButton").onclick = makeIntro;
   $("editIntroButton").onclick = () => show("introForm");
-  $("copyIntroButton").onclick = () =>
+  $("copyIntroButton").onclick = () => {
+    window.open("https://wrtn.ai/", "_blank", "noopener");
     copyText(
       $("introText").value,
       "introCopyStatus",
-      "복사했어요! 제미나이에 붙여넣으세요.",
+      "복사했어요! 뤼튼에 붙여넣으세요.",
     );
+  };
   $("saveIntroButton").onclick = () =>
-    saveText($("introText").value, "제미나이_자기소개_질문.txt");
+    saveText($("introText").value, "생성형AI_자기소개_질문.txt");
   $("copyFallbackButton").onclick = () =>
     copyText(
       $("fallbackIntroText").value,
@@ -619,12 +740,24 @@
           .forEach((item) =>
             item.classList.toggle("selected", item === button),
           );
-        if (!$("introFavorite").value.trim())
-          $("introFavorite").placeholder = `선택: ${favoriteChoice}`;
+      };
+    });
+
+  $("strengthChoices")
+    .querySelectorAll("button")
+    .forEach((button) => {
+      button.onclick = () => {
+        strengthChoice = button.dataset.value;
+        $("strengthChoices")
+          .querySelectorAll("button")
+          .forEach((item) =>
+            item.classList.toggle("selected", item === button),
+          );
       };
     });
 
   $("startButton").onclick = () => {
+    activeMode = "future";
     stepIndex = 0;
     show("picker");
     renderStep();
@@ -646,6 +779,21 @@
   $("saveButton").onclick = () =>
     saveText($("promptText").value, "미래의_나_AI_문장.txt");
   $("restartFutureButton").onclick = () => {
+    activeMode = "future";
+    stepIndex = 0;
+    show("picker");
+    renderStep();
+  };
+  $("copySpeakerButton").onclick = () =>
+    copyText(
+      $("speakerText").value,
+      "speakerCopyStatus",
+      "복사했어요! 금쪽이 스피커에게 읽거나 붙여넣으세요.",
+    );
+  $("saveSpeakerButton").onclick = () =>
+    saveText($("speakerText").value, "금쪽이_스피커_질문지.txt");
+  $("restartSpeakerButton").onclick = () => {
+    activeMode = "speaker";
     stepIndex = 0;
     show("picker");
     renderStep();

@@ -3,8 +3,8 @@ window.PROMPT_APP_CONFIG = {
   steps: [
     {
       id: "character",
-      title: "마음에 드는 캐릭터를 하나 골라보세요",
-      help: "자신이 좋아하는 캐릭터를 선택하면 AI가 그 캐릭터를 닮은 그림을 만들어줘요.",
+      title: "1. 캐릭터를 골라요",
+      help: "나와 함께할 캐릭터를 하나 골라요.",
       options: [
         {
           value: "rabbit",
@@ -40,7 +40,7 @@ window.PROMPT_APP_CONFIG = {
     },
     {
       id: "currentState",
-      title: "지금 나는 어떤 느낌인가요?",
+      title: "2. 지금의 나는 어떤 느낌인가요?",
       help: "지금 내 마음과 가까운 그림을 골라요.",
       options: [
         {
@@ -70,52 +70,9 @@ window.PROMPT_APP_CONFIG = {
       ],
     },
     {
-      id: "place",
-      title: "미래의 나는 어디에 있나요?",
-      help: "일하고 싶은 장소를 하나 골라요.",
-      options: [
-        {
-          value: "library",
-          label: "도서관",
-          image: "assets/cards/libro.jpg",
-          prompt: "밝고 정돈된 도서관",
-        },
-        {
-          value: "cafe",
-          label: "카페",
-          image: "assets/cards/cafe.jpg",
-          prompt: "깨끗하고 따뜻한 카페",
-        },
-        {
-          value: "office",
-          label: "사무실",
-          image: "assets/cards/office.png",
-          prompt: "밝고 편안한 사무실",
-        },
-        {
-          value: "outdoor",
-          label: "야외 공간",
-          image: "assets/cards/tomatto.jpg",
-          prompt: "햇빛이 비치는 안전한 야외 공간",
-        },
-        {
-          value: "studio",
-          label: "디자인 작업실",
-          image: "assets/cards/painting2.jpg",
-          prompt: "색과 그림 도구가 있는 디자인 작업실",
-        },
-        {
-          value: "animal",
-          label: "동물 돌봄 공간",
-          image: "assets/cards/raniramli-ai-generated-8520392_1920.png",
-          prompt: "깨끗한 동물 돌봄 공간",
-        },
-      ],
-    },
-    {
       id: "activity",
-      title: "미래의 나는 무엇을 하고 있나요?",
-      help: "해보고 싶은 일을 하나 골라요.",
+      title: "3. 내가 재미있어 하는 일은 무엇인가요?",
+      help: "해보면 재미있을 것 같은 일을 하나 골라요.",
       options: [
         {
           value: "bake",
@@ -162,9 +119,52 @@ window.PROMPT_APP_CONFIG = {
       ],
     },
     {
+      id: "place",
+      title: "4. 내가 좋아하는 장소는 어디인가요?",
+      help: "가보고 싶거나 편안한 장소를 하나 골라요.",
+      options: [
+        {
+          value: "library",
+          label: "도서관",
+          image: "assets/cards/libro.jpg",
+          prompt: "밝고 정돈된 도서관",
+        },
+        {
+          value: "cafe",
+          label: "카페",
+          image: "assets/cards/cafe.jpg",
+          prompt: "깨끗하고 따뜻한 카페",
+        },
+        {
+          value: "office",
+          label: "사무실",
+          image: "assets/cards/office.png",
+          prompt: "밝고 편안한 사무실",
+        },
+        {
+          value: "outdoor",
+          label: "야외 공간",
+          image: "assets/cards/tomatto.jpg",
+          prompt: "햇빛이 비치는 안전한 야외 공간",
+        },
+        {
+          value: "studio",
+          label: "디자인 작업실",
+          image: "assets/cards/painting2.jpg",
+          prompt: "색과 그림 도구가 있는 디자인 작업실",
+        },
+        {
+          value: "animal",
+          label: "동물 돌봄 공간",
+          image: "assets/cards/raniramli-ai-generated-8520392_1920.png",
+          prompt: "깨끗한 동물 돌봄 공간",
+        },
+      ],
+    },
+    {
       id: "futureMood",
-      title: "미래의 나는 어떤 표정일 까요?",
-      help: "원하는 미래의 기분을 골라요.",
+      title: "5. 나는 이런 표정을 좋아해요",
+      help: "마음에 드는 표정을 하나 골라요.",
       options: [
         {
           value: "happy",
@@ -194,7 +194,7 @@ window.PROMPT_APP_CONFIG = {
     },
     {
       id: "style",
-      title: "어떤 그림으로 만들까요?",
+      title: "6. 어떤 그림으로 만들까요?",
       help: "마음에 드는 그림 느낌을 골라요.",
       options: [
         {
@@ -203,12 +203,6 @@ window.PROMPT_APP_CONFIG = {
           image: "assets/cards/mario.png",
           prompt: "따뜻하고 선명한 2D 교육용 일러스트",
         },
-        // {
-        //   value: "3d",
-        //   label: "부드러운 3D",
-        //   image: "assets/cards/style-3d.svg",
-        //   prompt: "부드럽고 친근한 3D 애니메이션",
-        // },
         {
           value: "watercolor",
           label: "밝은 수채화",
