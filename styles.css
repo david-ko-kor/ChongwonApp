@@ -814,6 +814,43 @@ textarea {
   background: #fff;
   color: var(--ink);
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(27, 42, 65, 0.45);
+}
+.complete-modal {
+  width: min(560px, 100%);
+  padding: 34px 28px;
+  border: 5px solid var(--practice-deep);
+  border-radius: 30px;
+  background: #fffaf0;
+  text-align: center;
+  box-shadow: 0 28px 80px rgba(27, 42, 65, 0.28);
+}
+.complete-icon {
+  font-size: 72px;
+  line-height: 1;
+}
+.complete-modal h2 {
+  margin: 12px 0 10px;
+  color: var(--practice-deep);
+  font-size: clamp(40px, 6vw, 58px);
+}
+.complete-modal p {
+  margin: 8px 0;
+  color: var(--ink);
+  font-size: 25px;
+  font-weight: 900;
+}
+.complete-modal .complete-small {
+  color: var(--muted);
+  font-size: 20px;
+}
 .practice-field {
   display: block;
   margin-top: 18px;
@@ -841,6 +878,9 @@ textarea {
 .paste-guide.red-guide {
   border-color: var(--red-strong);
   background: var(--red-soft);
+}
+.security-panel {
+  max-width: 1400px;
 }
 .security-panel > .badge {
   display: table;
@@ -1137,6 +1177,129 @@ textarea {
   background: #fff;
   color: var(--ink);
 }
+.security-game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 80px 0 60px;
+}
+.security-score {
+  display: inline-flex;
+  align-items: center;
+  min-height: 58px;
+  padding: 12px 22px;
+  border: 4px solid var(--red-strong);
+  border-radius: 999px;
+  background: #fff6f8;
+  color: var(--security-deep);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 900;
+}
+.security-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 50px;
+}
+.security-game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 24px 80px;
+  border: 4px solid var(--security-line);
+  border-radius: 32px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 12px 24px rgba(127, 38, 58, 0.1);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+.security-game-card:hover {
+  border-color: var(--red-strong);
+  box-shadow: 0 18px 32px rgba(127, 38, 58, 0.16);
+  transform: translateY(-3px);
+}
+.security-game-card.clicked {
+  border-color: #cbd5dc;
+  background: #f3f6f8;
+  box-shadow: none;
+  color: #7b8790;
+  transform: none;
+}
+.security-card-icon {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin-bottom: 16px;
+  border-radius: 28px;
+  background: var(--red-soft);
+  font-size: 52px;
+}
+.security-game-card strong {
+  white-space: nowrap;
+  font-size: clamp(26px, 2.3vw, 34px);
+  font-weight: 900;
+}
+.security-game-card small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 900;
+}
+.security-feedback-modal {
+  width: min(520px, calc(100vw - 34px));
+  padding: 34px;
+  border: 7px solid var(--line);
+  border-radius: 34px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 28px 80px rgba(20, 30, 42, 0.26);
+}
+.security-feedback-modal.safe {
+  border-color: var(--green);
+  background: #f4fff9;
+}
+.security-feedback-modal.danger {
+  border-color: var(--red-strong);
+  background: #fff2f2;
+}
+.security-feedback-icon {
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--red-strong);
+  color: #fff;
+  font-size: 88px;
+  font-weight: 900;
+  line-height: 1;
+}
+.security-feedback-modal.safe .security-feedback-icon {
+  background: var(--green);
+}
+.security-feedback-modal h2 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: clamp(32px, 5vw, 52px);
+}
+.security-feedback-modal p {
+  margin: 0 0 22px;
+  color: var(--ink);
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.45;
+  font-weight: 900;
+}
+.security-complete-modal {
+  border-color: var(--red-strong);
+  background: #fff8f8;
+}
 
 @media (max-width: 900px) {
   .mission-grid {
@@ -1153,6 +1316,12 @@ textarea {
   }
   .security-example-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .security-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .security-game-card {
+    min-height: 190px;
   }
 }
 @media (max-width: 760px) {
@@ -1176,6 +1345,14 @@ textarea {
   .summary {
     grid-template-columns: repeat(2, 1fr);
   }
+  .security-game-top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .security-score,
+  #securityRestartButton {
+    width: 100%;
+  }
 }
 @media (max-width: 520px) {
   main {
@@ -1198,5 +1375,16 @@ textarea {
   }
   .fallback-box > button {
     width: 100%;
+  }
+  .security-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .security-game-card {
+    min-height: 160px;
+  }
+  .security-card-icon {
+    width: 72px;
+    height: 72px;
+    font-size: 42px;
   }
 }

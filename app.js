@@ -20,6 +20,9 @@
   let practiceCopied = false;
   let favoriteChoice = "";
   let strengthChoice = "";
+  let securityCorrectCount = 0;
+  let securityCompleteAfterFeedback = false;
+  let securityDeck = [];
   const answers = {};
   const speakerAnswers = {};
   const practiceItems = [
@@ -69,6 +72,18 @@
       mode: "paste",
       guide: "마지막 긴 문장을 복사하고 붙여넣어요.",
     },
+  ];
+  const securityCards = [
+    { id: "password", label: "비밀번호", icon: "🔒", safe: false, reason: "비밀번호는 절대 AI에 넣지 않아요." },
+    { id: "phone", label: "전화번호", icon: "📱", safe: false, reason: "전화번호는 다른 사람이 연락할 수 있는 개인정보예요." },
+    { id: "address", label: "집주소", icon: "🏠", safe: false, reason: "자세한 주소는 집 위치를 알 수 있어서 조심해야 해요." },
+    { id: "hobby", label: "취미", icon: "🎮", safe: true, reason: "취미는 보통 AI에 말해도 비교적 안전해요." },
+    { id: "food", label: "좋아하는 음식", icon: "🍕", safe: true, reason: "좋아하는 음식은 비교적 안전한 정보예요." },
+    { id: "color", label: "좋아하는 색", icon: "🎨", safe: true, reason: "좋아하는 색은 개인정보가 아니어서 비교적 안전해요." },
+    { id: "nickname", label: "별명", icon: "🙂", safe: true, reason: "실명 대신 별명은 더 안전하게 사용할 수 있어요." },
+    { id: "strength", label: "잘하는 일", icon: "⭐", safe: true, reason: "잘하는 일은 자기소개에 쓸 수 있는 안전한 정보예요." },
+    { id: "job", label: "관심 직업", icon: "👩‍🍳", safe: true, reason: "관심 직업은 진로 활동에 사용할 수 있어요." },
+    { id: "pet", label: "좋아하는 동물", icon: "🐶", safe: true, reason: "좋아하는 동물은 비교적 안전한 정보예요." },
   ];
 
   function show(id) {
@@ -132,6 +147,9 @@
     practiceSelected = false;
     practiceCopied = false;
     $("practiceNextButton").disabled = true;
+    $("practiceNextButton").classList.remove("hidden");
+    $("practiceRestartButton").classList.add("hidden");
+    $("practiceHomeButton").classList.add("hidden");
     $("practiceInputArea").classList.toggle("hidden", current.mode !== "paste");
     $("practiceStatus").textContent =
       current.mode === "select"
@@ -184,8 +202,42 @@
   }
 
   function nextPractice() {
-    practiceIndex = (practiceIndex + 1) % practiceItems.length;
+    if (practiceIndex < practiceItems.length - 1) {
+      practiceIndex += 1;
+      renderPractice();
+      return;
+    }
+    showPracticeComplete();
+  }
+
+  function showPracticeComplete() {
+    $("practiceStepText").textContent = "10 / 10 단계 완료";
+    $("practiceGuide").textContent = "모든 연습을 끝냈어요.";
+    $("practiceTarget").textContent = "참 잘했어요!";
+    $("practiceInput").value = "";
+    $("practiceInputArea").classList.add("hidden");
+    $("practiceNextButton").classList.add("hidden");
+    $("practiceRestartButton").classList.remove("hidden");
+    $("practiceHomeButton").classList.remove("hidden");
+    $("practiceStatus").textContent =
+      "다시 연습하려면 다시하기를 누르고, 다른 활동을 하려면 처음 화면으로 가요.";
+    $("practiceStatus").classList.add("success");
+    $("practiceCompleteModal").classList.remove("hidden");
+  }
+
+  function restartPractice() {
+    $("practiceCompleteModal").classList.add("hidden");
+    practiceIndex = 0;
     renderPractice();
+  }
+
+  function closePracticeCompleteModal() {
+    $("practiceCompleteModal").classList.add("hidden");
+  }
+
+  function goHomeFromPracticeComplete() {
+    closePracticeCompleteModal();
+    show("home");
   }
 
   function handlePracticeShortcut(event) {
@@ -213,95 +265,87 @@
     }
   }
 
-  function securityFindings() {
-    const text = $("securityInput").value.trim();
-    const findings = [];
-    const rules = [
-      {
-        name: "전화번호",
-        message: "전화번호는 다른 사람이 연락할 수 있는 개인정보예요.",
-        test: /01[016789][-\s.]?\d{3,4}[-\s.]?\d{4}/,
-      },
-      {
-        name: "이메일",
-        message: "이메일 주소는 로그인이나 연락에 쓰일 수 있어요.",
-        test: /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,
-      },
-      {
-        name: "비밀번호",
-        message: "비밀번호는 절대 AI에 넣지 않아요.",
-        test: /(비밀번호|비번|password|passcode|pw)\s*[:은는]?\s*\S{4,}|(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[^\s]{6,}/i,
-      },
-      {
-        name: "주소",
-        message: "자세한 주소는 집이나 학교 위치를 알 수 있어요.",
-        test: /(주소|사는 곳|살아요|아파트|빌라|원룸|동\s?\d+|호\s?\d+|번지|도로명|원주시|서울|부산|대구|인천|광주|대전|울산|세종|경기도|강원도|충청|전라|경상|제주).*(동|아파트|빌라|원룸|호|로|길|번지)?/,
-      },
-      {
-        name: "이름",
-        message: "실명은 AI에 넣기 전에 선생님과 먼저 확인해요.",
-        test: /(이름|실명|본명)\s*(은|는|:)?\s*[가-힣]{2,5}|저는\s*[가-힣]{2,4}(입니다|이에요|예요)/,
-      },
-    ];
+  function shuffle(items) {
+    return [...items]
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
+  }
 
-    rules.forEach((rule) => {
-      if (rule.test.test(text)) findings.push(rule);
-    });
+  function startSecurityGame() {
+    securityCorrectCount = 0;
+    securityCompleteAfterFeedback = false;
+    securityDeck = shuffle(securityCards).map((card) => ({
+      ...card,
+      clicked: false,
+    }));
+    closeSecurityFeedback();
+    closeSecurityComplete();
+    renderSecurityGame();
+  }
 
-    if ($("securityPhoto").files.length) {
-      findings.push({
-        name: "사진",
-        message: "사진에는 얼굴, 교복, 장소가 보일 수 있어요.",
+  function renderSecurityGame() {
+    $("securityScore").textContent = `맞힌 카드 ${securityCorrectCount} / 7`;
+    $("securityCardGrid").innerHTML = securityDeck
+      .map(
+        (card) => `
+          <button class="security-game-card${card.clicked ? " clicked" : ""}" type="button" data-card-id="${html(card.id)}" ${card.clicked ? "disabled" : ""}>
+            <span class="security-card-icon">${html(card.icon)}</span>
+            <strong>${html(card.label)}</strong>
+          </button>
+        `,
+      )
+      .join("");
+    $("securityCardGrid")
+      .querySelectorAll("button")
+      .forEach((button) => {
+        button.onclick = () => chooseSecurityCard(button.dataset.cardId);
       });
-    }
-
-    return { text, findings };
   }
 
-  function renderSecurityResult() {
-    const { text, findings } = securityFindings();
-    const hasPhoto = $("securityPhoto").files.length > 0;
-    $("securityResult").classList.remove("safe", "danger", "neutral");
-
-    if (!text && !hasPhoto) {
-      $("securityResult").classList.add("neutral");
-      $("securityResultIcon").textContent = "?";
-      $("securityResultTitle").textContent = "아직 확인하지 않았어요";
-      $("securityResultText").textContent =
-        "왼쪽 칸에 문장을 넣고 확인하기를 눌러요.";
-      $("securityReasonList").innerHTML = "";
-      return;
-    }
-
-    if (findings.length) {
-      $("securityResult").classList.add("danger");
-      $("securityResultIcon").textContent = "!";
-      $("securityResultTitle").textContent = "경고! 멈춰요";
-      $("securityResultText").textContent =
-        "AI에 넣으면 위험할 수 있는 정보가 보여요.";
-      $("securityReasonList").innerHTML = findings
-        .map(
-          (item) =>
-            `<li><strong>${html(item.name)}</strong><span>${html(item.message)}</span></li>`,
-        )
-        .join("");
-      return;
-    }
-
-    $("securityResult").classList.add("safe");
-    $("securityResultIcon").textContent = "✓";
-    $("securityResultTitle").textContent = "좋아요. 개인정보가 보이지 않아요";
-    $("securityResultText").textContent =
-      "좋아하는 것, 하고 싶은 일처럼 일반적인 내용은 비교적 안전해요.";
-    $("securityReasonList").innerHTML =
-      "<li><strong>안전</strong><span>그래도 AI에 넣기 전에는 한 번 더 읽어봐요.</span></li>";
+  function chooseSecurityCard(cardId) {
+    const card = securityDeck.find((item) => item.id === cardId);
+    if (!card || card.clicked || securityCorrectCount >= 7) return;
+    card.clicked = true;
+    if (card.safe) securityCorrectCount += 1;
+    renderSecurityGame();
+    showSecurityFeedback(card);
   }
 
-  function resetSecurityTest() {
-    $("securityInput").value = "";
-    $("securityPhoto").value = "";
-    renderSecurityResult();
-    $("securityInput").focus();
+  function showSecurityFeedback(card) {
+    $("securityFeedbackBox").classList.toggle("safe", card.safe);
+    $("securityFeedbackBox").classList.toggle("danger", !card.safe);
+    $("securityFeedbackIcon").textContent = card.safe ? "O" : "X";
+    $("securityFeedbackTitle").textContent = card.safe
+      ? "맞았어요!"
+      : "경고! 조심해요";
+    $("securityFeedbackText").textContent = card.reason;
+    securityCompleteAfterFeedback = card.safe && securityCorrectCount >= 7;
+    $("securityFeedbackCloseButton").textContent = securityCompleteAfterFeedback
+      ? "완료 보기"
+      : "계속하기";
+    $("securityFeedbackModal").classList.remove("hidden");
+  }
+
+  function closeSecurityFeedback() {
+    $("securityFeedbackModal").classList.add("hidden");
+  }
+
+  function closeSecurityComplete() {
+    $("securityCompleteModal").classList.add("hidden");
+  }
+
+  function closeSecurityFeedbackAndMaybeComplete() {
+    closeSecurityFeedback();
+    if (securityCompleteAfterFeedback) {
+      $("securityCompleteModal").classList.remove("hidden");
+    }
+  }
+
+  function goHomeFromSecurity() {
+    closeSecurityFeedback();
+    closeSecurityComplete();
+    show("home");
   }
 
   function makeIntro() {
@@ -393,8 +437,7 @@
     $("questionTitle").textContent = current.title;
     $("questionHelp").textContent = current.help;
     $("progressText").textContent = `${stepIndex + 1} / ${steps.length}`;
-    $("progressBar").style.width =
-      `${((stepIndex + 1) / steps.length) * 100}%`;
+    $("progressBar").style.width = `${((stepIndex + 1) / steps.length) * 100}%`;
     const host = $("options");
     host.innerHTML = "";
     if (current.type === "text") {
@@ -708,7 +751,7 @@
   };
   $("securityModeButton").onclick = () => {
     show("securityTest");
-    renderSecurityResult();
+    startSecurityGame();
   };
   $("homeButton").onclick = () => show("home");
   $("makeIntroButton").onclick = makeIntro;
@@ -775,8 +818,10 @@
       "copyStatus",
       "복사했어요! 생성형 AI에 붙여넣으세요.",
     );
-  $("saveButton").onclick = () =>
-    saveText($("promptText").value, "미래의_나_AI_문장.txt");
+  if ($("saveButton")) {
+    $("saveButton").onclick = () =>
+      saveText($("promptText").value, "미래의_나_AI_문장.txt");
+  }
   $("restartFutureButton").onclick = () => {
     activeMode = "future";
     stepIndex = 0;
@@ -805,19 +850,15 @@
   document.addEventListener("keydown", handlePracticeShortcut);
   $("practiceInput").addEventListener("input", checkPracticeText);
   $("practiceNextButton").onclick = nextPractice;
-  $("securityCheckButton").onclick = renderSecurityResult;
-  $("securityResetButton").onclick = resetSecurityTest;
-  $("securityInput").addEventListener("input", renderSecurityResult);
-  $("securityPhoto").addEventListener("change", renderSecurityResult);
-  document
-    .querySelectorAll(".security-example-grid button")
-    .forEach((button) => {
-      button.onclick = () => {
-        $("securityInput").value = button.dataset.example;
-        $("securityPhoto").value = "";
-        renderSecurityResult();
-      };
-    });
+  $("practiceRestartButton").onclick = restartPractice;
+  $("practiceHomeButton").onclick = goHomeFromPracticeComplete;
+  $("modalPracticeRestartButton").onclick = restartPractice;
+  $("modalPracticeHomeButton").onclick = goHomeFromPracticeComplete;
+  $("modalPracticeCloseButton").onclick = closePracticeCompleteModal;
+  $("securityRestartButton").onclick = startSecurityGame;
+  $("securityFeedbackCloseButton").onclick = closeSecurityFeedbackAndMaybeComplete;
+  $("securityCompleteRestartButton").onclick = startSecurityGame;
+  $("securityCompleteHomeButton").onclick = goHomeFromSecurity;
   $("importResult").onchange = (event) => {
     if (event.target.files[0]) importFirst(event.target.files[0]);
   };
