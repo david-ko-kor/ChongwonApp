@@ -74,16 +74,76 @@
     },
   ];
   const securityCards = [
-    { id: "password", label: "비밀번호", icon: "🔒", safe: false, reason: "비밀번호는 절대 AI에 넣지 않아요." },
-    { id: "phone", label: "전화번호", icon: "📱", safe: false, reason: "전화번호는 다른 사람이 연락할 수 있는 개인정보예요." },
-    { id: "address", label: "집주소", icon: "🏠", safe: false, reason: "자세한 주소는 집 위치를 알 수 있어서 조심해야 해요." },
-    { id: "hobby", label: "취미", icon: "🎮", safe: true, reason: "취미는 보통 AI에 말해도 비교적 안전해요." },
-    { id: "food", label: "좋아하는 음식", icon: "🍕", safe: true, reason: "좋아하는 음식은 비교적 안전한 정보예요." },
-    { id: "color", label: "좋아하는 색", icon: "🎨", safe: true, reason: "좋아하는 색은 개인정보가 아니어서 비교적 안전해요." },
-    { id: "nickname", label: "별명", icon: "🙂", safe: true, reason: "실명 대신 별명은 더 안전하게 사용할 수 있어요." },
-    { id: "strength", label: "잘하는 일", icon: "⭐", safe: true, reason: "잘하는 일은 자기소개에 쓸 수 있는 안전한 정보예요." },
-    { id: "job", label: "관심 직업", icon: "👩‍🍳", safe: true, reason: "관심 직업은 진로 활동에 사용할 수 있어요." },
-    { id: "pet", label: "좋아하는 동물", icon: "🐶", safe: true, reason: "좋아하는 동물은 비교적 안전한 정보예요." },
+    {
+      id: "password",
+      label: "비밀번호",
+      icon: "🔒",
+      safe: false,
+      reason: "비밀번호는 절대 AI에 넣지 않아요.",
+    },
+    {
+      id: "phone",
+      label: "전화번호",
+      icon: "📱",
+      safe: false,
+      reason: "전화번호는 다른 사람이 연락할 수 있는 개인정보예요.",
+    },
+    {
+      id: "address",
+      label: "집주소",
+      icon: "🏠",
+      safe: false,
+      reason: "자세한 주소는 집 위치를 알 수 있어서 조심해야 해요.",
+    },
+    {
+      id: "hobby",
+      label: "취미",
+      icon: "🎮",
+      safe: true,
+      reason: "취미는 보통 AI에 말해도 비교적 안전해요.",
+    },
+    {
+      id: "food",
+      label: "좋아하는 음식",
+      icon: "🍕",
+      safe: true,
+      reason: "좋아하는 음식은 비교적 안전한 정보예요.",
+    },
+    {
+      id: "color",
+      label: "좋아하는 색",
+      icon: "🎨",
+      safe: true,
+      reason: "좋아하는 색은 개인정보가 아니어서 비교적 안전해요.",
+    },
+    {
+      id: "nickname",
+      label: "별명",
+      icon: "🙂",
+      safe: true,
+      reason: "실명 대신 별명은 더 안전하게 사용할 수 있어요.",
+    },
+    {
+      id: "strength",
+      label: "잘하는 일",
+      icon: "⭐",
+      safe: true,
+      reason: "잘하는 일은 자기소개에 쓸 수 있는 안전한 정보예요.",
+    },
+    {
+      id: "job",
+      label: "관심 직업",
+      icon: "👩‍🍳",
+      safe: true,
+      reason: "관심 직업은 진로 활동에 사용할 수 있어요.",
+    },
+    {
+      id: "pet",
+      label: "좋아하는 동물",
+      icon: "🐶",
+      safe: true,
+      reason: "좋아하는 동물은 비교적 안전한 정보예요.",
+    },
   ];
 
   function show(id) {
@@ -856,7 +916,8 @@
   $("modalPracticeHomeButton").onclick = goHomeFromPracticeComplete;
   $("modalPracticeCloseButton").onclick = closePracticeCompleteModal;
   $("securityRestartButton").onclick = startSecurityGame;
-  $("securityFeedbackCloseButton").onclick = closeSecurityFeedbackAndMaybeComplete;
+  $("securityFeedbackCloseButton").onclick =
+    closeSecurityFeedbackAndMaybeComplete;
   $("securityCompleteRestartButton").onclick = startSecurityGame;
   $("securityCompleteHomeButton").onclick = goHomeFromSecurity;
   $("importResult").onchange = (event) => {
