@@ -346,6 +346,7 @@ main {
 .result,
 .question,
 .import-card {
+  display: block;
   background: #fff;
   border: 3px solid var(--line);
   border-radius: 26px;
@@ -551,9 +552,13 @@ textarea {
 .welcome {
   min-height: 550px;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 32px;
+  grid-template-columns: minmax(0, 760px);
+  justify-content: center;
   align-items: center;
+  text-align: center;
+  /* grid-template-columns:0 0.9fr;
+  gap: 32px;
+  align-items: center; */
 }
 .hero-copy h2 {
   margin: 18px 0 13px;
@@ -617,8 +622,28 @@ textarea {
 }
 .options {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
+  gap: 30px;
+}
+.character-options {
+  grid-template-columns: repeat(3, 1fr);
+}
+.currentState-options {
+  grid-template-columns: repeat(2, 1fr);
+}
+.activity-options {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.place-options {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.futureMood-options {
+  grid-template-columns: repeat(4, 1fr);
+}
+.style-options {
+  grid-template-columns: repeat(2, 1fr);
 }
 .option {
   min-height: 235px;
@@ -775,8 +800,8 @@ textarea {
 .copy-target {
   display: grid;
   place-items: center;
-  min-height: 128px;
-  padding: 20px;
+  /* min-height: 300px; */
+  padding: 28px;
   border: 4px solid var(--orange);
   border-radius: 24px;
   background: #fffaf4;
@@ -785,14 +810,16 @@ textarea {
   user-select: text;
 }
 .copy-target span {
-  font-size: clamp(30px, 5vw, 54px);
+  font-size: clamp(24px, 3vw, 38px);
   font-weight: 900;
-  line-height: 1.25;
+  line-height: 1.55;
   word-break: keep-all;
+  white-space: pre-line;
   user-select: text;
 }
 .practice-actions {
   display: flex;
+  font-size: 30px;
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;

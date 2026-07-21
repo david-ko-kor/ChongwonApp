@@ -36,6 +36,12 @@ window.PROMPT_APP_CONFIG = {
           image: "assets/animals/여우.png",
           prompt: "밝고 친근한 여우 캐릭터",
         },
+        {
+          value: "elephant",
+          label: "코끼리",
+          image: "assets/animals/코끼리.png",
+          prompt: "밝고 친근한 코끼리 캐릭터",
+        },
       ],
     },
     {
@@ -83,7 +89,7 @@ window.PROMPT_APP_CONFIG = {
         {
           value: "drink",
           label: "음료 만들기",
-          image: "assets/cards/cafe.jpg",
+          image: "assets/cards/making.png",
           prompt: "음료를 만들고 손님에게 친절하게 전달하는",
         },
         {
@@ -115,6 +121,18 @@ window.PROMPT_APP_CONFIG = {
           label: "자료 정리하기",
           image: "assets/activities/post.jpg",
           prompt: "컴퓨터로 자료와 파일을 차분하게 정리하는",
+        },
+        {
+          value: "plant_care",
+          label: "식물 가꾸기",
+          image: "assets/activities/tomatto.jpg",
+          prompt: "식물에 물을 주고 건강하게 가꾸는",
+        },
+        {
+          value: "computer_work",
+          label: "컴퓨터 작업하기",
+          image: "assets/activities/office.png",
+          prompt: "컴퓨터로 필요한 작업을 차분하게 하는",
         },
       ],
     },

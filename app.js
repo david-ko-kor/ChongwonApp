@@ -31,16 +31,20 @@
       mode: "select",
       guide: "짧은 글자예요. 글자 전체를 드래그해요.",
     },
-    { text: "청원학교", mode: "select", guide: "청원학교를 드래그 해주세요." },
+    {
+      text: "청원학교",
+      mode: "select",
+      guide: "청원학교를 드래그 해주세요.",
+    },
     {
       text: "바리스타",
       mode: "select",
-      guide: ".",
+      guide: "바리스타를 드래그해요.",
     },
     {
       text: "오늘의 점심메뉴는 무엇인가요?",
       mode: "select",
-      guide: "문장 전체를 드래그 해주세요",
+      guide: "문장 전체를 드래그 해주세요.",
     },
     {
       text: "미래의 나",
@@ -68,9 +72,9 @@
       guide: "긴 질문을 복사해서 아래 칸에 붙여넣어요.",
     },
     {
-      text: "금쪽이 스피커야, 오늘 내가 연습할 일을 알려줘.",
+      text: "금쪽이 스피커야, 오늘 내가 연습할 일을 알려줘.\n나는 미래의 나 활동에서 코끼리 캐릭터를 골랐어.\n내가 재미있어 하는 일은 음료 만들기라고 선택했어.\n내가 좋아하는 장소는 조용하고 밝은 카페라고 생각해.\nAI에게 물어볼 때는 개인정보를 쓰지 않을 거야.\n",
       mode: "paste",
-      guide: "마지막 긴 문장을 복사하고 붙여넣어요.",
+      guide: "10단계입니다. 7줄 전체를 드래그하고 복사해서 붙여넣어요.",
     },
   ];
   const securityCards = [
@@ -116,13 +120,13 @@
       safe: true,
       reason: "좋아하는 색은 개인정보가 아니어서 비교적 안전해요.",
     },
-    {
-      id: "nickname",
-      label: "별명",
-      icon: "🙂",
-      safe: true,
-      reason: "실명 대신 별명은 더 안전하게 사용할 수 있어요.",
-    },
+    // {
+    //   id: "nickname",
+    //   label: "별명",
+    //   icon: "🙂",
+    //   safe: true,
+    //   reason: "실명 대신 별명은 더 안전하게 사용할 수 있어요.",
+    // },
     {
       id: "strength",
       label: "잘하는 일",
@@ -137,13 +141,13 @@
       safe: true,
       reason: "관심 직업은 진로 활동에 사용할 수 있어요.",
     },
-    {
-      id: "pet",
-      label: "좋아하는 동물",
-      icon: "🐶",
-      safe: true,
-      reason: "좋아하는 동물은 비교적 안전한 정보예요.",
-    },
+    // {
+    //   id: "pet",
+    //   label: "좋아하는 동물",
+    //   icon: "🐶",
+    //   safe: true,
+    //   reason: "좋아하는 동물은 비교적 안전한 정보예요.",
+    // },
   ];
 
   function show(id) {
@@ -345,7 +349,7 @@
   }
 
   function renderSecurityGame() {
-    $("securityScore").textContent = `맞힌 카드 ${securityCorrectCount} / 7`;
+    $("securityScore").textContent = `맞힌 카드 ${securityCorrectCount} / 5`;
     $("securityCardGrid").innerHTML = securityDeck
       .map(
         (card) => `
@@ -380,7 +384,7 @@
       ? "맞았어요!"
       : "경고! 조심해요";
     $("securityFeedbackText").textContent = card.reason;
-    securityCompleteAfterFeedback = card.safe && securityCorrectCount >= 7;
+    securityCompleteAfterFeedback = card.safe && securityCorrectCount >= 5;
     $("securityFeedbackCloseButton").textContent = securityCompleteAfterFeedback
       ? "완료 보기"
       : "계속하기";
@@ -493,6 +497,7 @@
   function renderStep() {
     const current = step();
     const steps = currentSteps();
+    $("options").className = `options ${current.id}-options`;
     const answerSet = currentAnswers();
     $("questionTitle").textContent = current.title;
     $("questionHelp").textContent = current.help;
@@ -920,7 +925,9 @@
     closeSecurityFeedbackAndMaybeComplete;
   $("securityCompleteRestartButton").onclick = startSecurityGame;
   $("securityCompleteHomeButton").onclick = goHomeFromSecurity;
-  $("importResult").onchange = (event) => {
-    if (event.target.files[0]) importFirst(event.target.files[0]);
-  };
+  if ($("importResult")) {
+    $("importResult").onchange = (event) => {
+      if (event.target.files[0]) importFirst(event.target.files[0]);
+    };
+  }
 })();

@@ -148,6 +148,8 @@
         <button id="copyIntroButton" class="primary green-bg" type="button">생성형AI 질문 복사하기</button>
         <button id="editIntroButton" class="secondary green-border" type="button">다시 고치기</button>
         <button id="saveIntroButton" class="secondary green-border" type="button">질문 저장</button>
+        <a class="secondary green-border action-link" href="https://gemini.google.com/" target="_blank"
+          rel="noopener">제미나이로 이동</a>
         <a class="secondary green-border action-link" href="https://wrtn.ai/" target="_blank" rel="noopener">뤼튼으로 이동</a>
       </div>
       <p id="introCopyStatus" class="copy-status" aria-live="assertive"></p>
@@ -171,13 +173,6 @@
         <h2>그림을 고르면<br>AI 문장이 완성돼요</h2>
         <p>글을 길게 쓰지 않아도 괜찮아요.<br>나와 가까운 그림을 하나씩 골라요.</p>
         <button id="startButton" class="primary" type="button">시작하기</button>
-      </div>
-      <div class="import-card">
-        <h3>1차시 결과가 있나요?</h3>
-        <p>결과 파일을 불러오면 동물 친구와 직업활동이 먼저 선택됩니다.</p>
-        <label class="secondary file-label">1차시 결과 불러오기<input id="importResult" type="file"
-            accept="application/json"></label>
-        <p id="importStatus" class="status" aria-live="polite"></p>
       </div>
     </section>
 
@@ -206,7 +201,10 @@
       <textarea id="promptText" rows="9"></textarea>
       <div class="result-buttons">
         <button id="copyButton" class="primary" type="button">AI 문장 복사하기</button>
+        <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="secondary duck-link">제미나이</a>
         <a href="https://duck.ai/" target="_blank" rel="noopener" class="secondary duck-link">Duck AI 열기</a>
+
+
         <button id="restartFutureButton" class="secondary" type="button">다시 고르기</button>
       </div>
       <p id="copyStatus" class="copy-status" aria-live="assertive"></p>
@@ -301,7 +299,7 @@
         <div class="complete-modal security-complete-modal">
           <div class="complete-icon" aria-hidden="true">🛡️</div>
           <h2 id="securityCompleteTitle">게임 성공!</h2>
-          <p>안전한 카드 7개를 찾았어요.</p>
+          <p>안전한 카드 5개를 찾았어요.</p>
           <p class="complete-small">AI에 넣으면 되는 정보와 조심할 정보를 구별했어요.</p>
           <div class="practice-actions">
             <button id="securityCompleteRestartButton" class="secondary red-border" type="button">다시하기</button>
